@@ -1,0 +1,43 @@
+[
+	{
+		"title": "Week 1 (FEB 09)",
+		"contents": [
+			{
+				"title": "Text Book",
+				"content": "Fundamentals of Web Development",
+				"url": "https://www.pearson.com/en-us/subject-catalog/p/fundamentals-of-web-development/P200000003214/9780136792857"
+			},
+			{
+				"title": "Reference",
+				"content": "Programming Challenges",
+				"url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
+			},
+			{
+				"title": "Video",
+				"content": "What happens when you type google.com into your browser and press enter?",
+				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
+			}
+		]
+	},
+	{
+		"title": "Week 2 (FEB 16)",
+		"contents": [
+			{
+				"title": "Referance",
+				"content": "W3C HTML5 Specification",
+				"url": "https://html.spec.whatwg.org/multipage/"
+			},
+			{
+				"title": "Referance",
+				"content": "HTML Tags List",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
+			},
+			{
+				"title": "Referance",
+				"content": "HTML Attributes List",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
+			}
+		]
+	}
+];
+
