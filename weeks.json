@@ -36,6 +36,11 @@
 				"title": "Referance",
 				"content": "HTML Attributes List",
 				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
+			},
+			{
+				"title": "Examples",
+				"content": "Chapter 3 Examples",
+				"url": "https://github.com/ITCS333/examples/tree/main/ch3"
 			}
 		]
 	}
