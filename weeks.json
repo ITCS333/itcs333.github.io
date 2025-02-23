@@ -24,7 +24,7 @@
 		"contents": [
 			{
 				"title": "Referance",
-				"content": "W3C HTML5 Specification",
+				"content": "W3C HTML Specification",
 				"url": "https://html.spec.whatwg.org/multipage/"
 			},
 			{
@@ -41,6 +41,21 @@
 				"title": "Examples",
 				"content": "Chapter 3 Examples",
 				"url": "https://github.com/ITCS333/examples/tree/main/ch3"
+			}
+		]
+	},
+	{
+		"title": "Week 3 (FEB 23)",
+		"contents": [
+			{
+				"title": "Referance",
+				"content": "W3C CSS Specification",
+				"url": "https://www.w3.org/Style/CSS/"
+			},
+			{
+				"title": "Referance",
+				"content": "CSS Properties List",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
 			}
 		]
 	}
