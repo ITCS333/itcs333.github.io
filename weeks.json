@@ -61,7 +61,13 @@
 				"title": "Examples",
 				"content": "Chapter 4 Examples",
 				"url": "https://github.com/ITCS333/examples/tree/main/ch4"
+			},
+			{
+				"title": "CSS Framework",
+				"content": "Pico CSS",
+				"url": "https://picocss.com/docs"
 			}
+			
 		]
 	}
 ]
