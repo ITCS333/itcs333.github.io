@@ -69,5 +69,15 @@
 			}
 			
 		]
+	},
+	{
+		"title": "Week 4 (MAR 02)",
+		"contents": [
+			{
+				"title": "Examples",
+				"content": "Chapter 7 Examples",
+				"url": "https://github.com/ITCS333/examples/tree/main/ch7"
+			}
+		]
 	}
 ]
