@@ -77,6 +77,11 @@
 				"title": "Examples",
 				"content": "Chapter 7 Examples",
 				"url": "https://github.com/ITCS333/examples/tree/main/ch7"
+			},
+			{
+				"title": "Project (Phase 1):",
+				"content": "Desing using HTML and CSS",
+				"url": "md/project/phase1.md"
 			}
 		]
 	}
