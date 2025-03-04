@@ -23,17 +23,17 @@
 		"title": "Week 2 (FEB 16)",
 		"contents": [
 			{
-				"title": "Referance",
+				"title": "Reference",
 				"content": "W3C HTML Specification",
 				"url": "https://html.spec.whatwg.org/multipage/"
 			},
 			{
-				"title": "Referance",
+				"title": "Reference",
 				"content": "HTML Tags List",
 				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
 			},
 			{
-				"title": "Referance",
+				"title": "Reference",
 				"content": "HTML Attributes List",
 				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
 			},
@@ -48,13 +48,13 @@
 		"title": "Week 3 (FEB 23)",
 		"contents": [
 			{
-				"title": "Referance",
+				"title": "Reference",
 				"content": "W3C CSS Specification",
 				"url": "https://www.w3.org/Style/CSS/"
 			},
 			{
-				"title": "Referance",
-				"content": "MDN CSS Referance",
+				"title": "Reference",
+				"content": "MDN CSS Reference",
 				"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
 			},
 			{
@@ -80,7 +80,7 @@
 			},
 			{
 				"title": "Project (Phase 1)",
-				"content": "Desing using HTML and CSS",
+				"content": "Design using HTML and CSS",
 				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase1.md"
 			}
 		]
