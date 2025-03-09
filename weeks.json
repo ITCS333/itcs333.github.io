@@ -84,5 +84,20 @@
 				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase1.md"
 			}
 		]
+	},
+	{
+		"title": "Week 5 (MAR 09)",
+		"contents": [
+			{
+				"title": "Reference",
+				"content": "ECMAScript 2024 language specification",
+				"url": "https://262.ecma-international.org/15.0/index.html"
+			},
+			{
+				"title": "Reference",
+				"content": "MDN JavaScript Guide",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+			}
+		]
 	}
 ]
