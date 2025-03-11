@@ -97,7 +97,13 @@
 				"title": "Reference",
 				"content": "MDN JavaScript Guide",
 				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+			},
+			{
+				"title": "Examples",
+				"content": "JavaScript Fundamentals Quiz",
+				"url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
 			}
+			
 		]
 	}
 ]
