@@ -102,8 +102,17 @@
 				"title": "Examples",
 				"content": "JavaScript Fundamentals Quiz",
 				"url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
+			},
+			{
+				"title": "Examples",
+				"content": "Callbacks, Scope & Closures.",
+				"url": "https://itcs333.github.io/examples/ch8/callbacks-scope-closures.html"
+			},
+			{
+				"title": "Examples",
+				"content": "Hoisting",
+				"url": "https://itcs333.github.io/examples/ch8/hoisting.html"
 			}
-			
 		]
 	}
 ]
