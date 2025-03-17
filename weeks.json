@@ -82,6 +82,11 @@
 				"title": "Project (Phase 1)",
 				"content": "Design using HTML and CSS",
 				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase1.md"
+			},
+			{
+				"title": "Video",
+				"content": "Introdcution to GitHub",
+				"url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/intro-to-github.mkv?csf=1&web=1&e=NYfYJz&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D"
 			}
 		]
 	},
@@ -114,5 +119,16 @@
 				"url": "https://itcs333.github.io/examples/ch8/hoisting.html"
 			}
 		]
+	},
+	{
+		"title": "Week 6 (MAR 16)",
+		"contents": [
+			{
+				"title": "Examples",
+				"content": "JavaScript DOM Manipulation",
+				"url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
+			}
+		]
 	}
+
 ]
