@@ -4,7 +4,7 @@
 In this first phase of the Campus Hub project, you will create the HTML and CSS foundations for your assigned module. Each module will require equivalent effort and will follow the same structural guidelines to ensure a cohesive final product.
 
 ## Pahse One Deadline
-* **Due Date**: Saturday 05/04/2025 Midnight
+* **Due Date**: Saturday 12/04/2025 Midnight
 
 ## Your Task
 You will develop the responsive frontend layout for your assigned module using HTML and CSS only (no JavaScript functionality in this phase). Your layout must support all required views and user interactions that will be implemented in later phases.
