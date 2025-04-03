@@ -129,6 +129,31 @@
 				"url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
 			}
 		]
+	},
+	{
+		"title": "Week 7 (MAR 23)",
+		"contents": [
+			{
+				"title": "Examples",
+				"content": "JavaScript Events Eaxamples",
+				"url": "https://itcs333.github.io/examples/ch9/js-events.html"
+			}
+		]
+	},
+	{
+		"title": "Week 8 (MAR 30)",
+		"contents": [
+			{
+				"title": "Examples",
+				"content": "JavaScript Events Excercises",
+				"url": "https://itcs333.github.io/examples/ch9/events-quiz.html"
+			},
+			{
+				"title": "Reference",
+				"content": "MDN HTML5 Forms Validation",
+				"url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
+			}
+		]
 	}
 
 ]
