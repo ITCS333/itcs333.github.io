@@ -41,6 +41,11 @@
 				"title": "Examples",
 				"content": "Chapter 3 Examples",
 				"url": "https://github.com/ITCS333/examples/tree/main/ch3"
+			},
+			{
+				"title": "Excercises",
+				"content": "HTML Concepts",
+				"url": "https://itcs333.github.io/examples/ch3/html-quiz.html"
 			}
 		]
 	},
@@ -66,6 +71,11 @@
 				"title": "CSS Framework",
 				"content": "Pico CSS",
 				"url": "https://picocss.com/docs"
+			},
+			{
+				"title": "Excercises",
+				"content": "CSS Concepts",
+				"url": "https://itcs333.github.io/examples/ch4/css-quiz.html"
 			}
 			
 		]
@@ -104,13 +114,13 @@
 				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
 			},
 			{
-				"title": "Examples",
-				"content": "JavaScript Fundamentals Quiz",
+				"title": "Excercises",
+				"content": "JavaScript Fundamentals Excercises",
 				"url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
 			},
 			{
 				"title": "Examples",
-				"content": "Callbacks, Scope & Closures.",
+				"content": "Callbacks, Scope & Closures",
 				"url": "https://itcs333.github.io/examples/ch8/callbacks-scope-closures.html"
 			},
 			{
@@ -124,7 +134,7 @@
 		"title": "Week 6 (MAR 16)",
 		"contents": [
 			{
-				"title": "Examples",
+				"title": "Excercises",
 				"content": "JavaScript DOM Manipulation",
 				"url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
 			}
@@ -144,7 +154,7 @@
 		"title": "Week 8 (MAR 30)",
 		"contents": [
 			{
-				"title": "Examples",
+				"title": "Excercises",
 				"content": "JavaScript Events Excercises",
 				"url": "https://itcs333.github.io/examples/ch9/events-quiz.html"
 			},
