@@ -164,6 +164,15 @@
 				"url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
 			}
 		]
+	},
+	{
+		"title": "Week 9 (APR 06)",
+		"contents": [
+			{
+				"title": "Exercises",
+				"content": "JavaScript Array Functions",
+				"url": "https://itcs333.github.io/examples/ch10/array-functions.html"
+			}
+		]
 	}
-
 ]
