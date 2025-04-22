@@ -202,6 +202,11 @@
 				"title": "Reference",
 				"content": "PHP Manual",
 				"url": "https://www.php.net/manual/en/"
+			},
+			{
+				"title": "Example",
+				"content": "PHP Image Gallery",
+				"url": "https://github.com/ITCS333/examples/tree/main/ch12/php_image_gallery"
 			}
 		]
 	}
