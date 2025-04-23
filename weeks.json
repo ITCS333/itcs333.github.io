@@ -204,6 +204,11 @@
 				"url": "https://www.php.net/manual/en/"
 			},
 			{
+				"title": "Exercises",
+				"content": "PHP Fundamentals Exercises",
+				"url": "https://itcs333.github.io/examples/ch12/intro-to-php.html"
+			},
+			{
 				"title": "Example",
 				"content": "PHP Image Gallery",
 				"url": "https://github.com/ITCS333/examples/tree/main/ch12/php_image_gallery"
