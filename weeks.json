@@ -182,7 +182,12 @@
 				"title": "Exercises",
 				"content": "JavaScript Fetch API Playground",
 				"url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
-			}
+			},
+  {
+				"title": "Project (Phase 2)",
+				"content": "JavaScript",
+				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase2.md"
+			},
 		]
 	},
 	{
