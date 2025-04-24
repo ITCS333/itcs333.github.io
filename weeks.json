@@ -1,223 +1,222 @@
 [
-	{
-		"title": "Week 1 (FEB 09)",
-		"contents": [
-			{
-				"title": "Text Book",
-				"content": "Fundamentals of Web Development",
-				"url": "https://www.pearson.com/en-us/subject-catalog/p/fundamentals-of-web-development/P200000003214/9780136792857"
-			},
-			{
-				"title": "Reference",
-				"content": "Programming Challenges",
-				"url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
-			},
-			{
-				"title": "Video",
-				"content": "What happens when you type google.com into your browser and press enter?",
-				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
-			}
-		]
-	},
-	{
-		"title": "Week 2 (FEB 16)",
-		"contents": [
-			{
-				"title": "Reference",
-				"content": "W3C HTML Specification",
-				"url": "https://html.spec.whatwg.org/multipage/"
-			},
-			{
-				"title": "Reference",
-				"content": "HTML Tags List",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
-			},
-			{
-				"title": "Reference",
-				"content": "HTML Attributes List",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
-			},
-			{
-				"title": "Examples",
-				"content": "Chapter 3 Examples",
-				"url": "https://github.com/ITCS333/examples/tree/main/ch3"
-			},
-			{
-				"title": "Excercises",
-				"content": "HTML Concepts",
-				"url": "https://itcs333.github.io/examples/ch3/html-quiz.html"
-			}
-		]
-	},
-	{
-		"title": "Week 3 (FEB 23)",
-		"contents": [
-			{
-				"title": "Reference",
-				"content": "W3C CSS Specification",
-				"url": "https://www.w3.org/Style/CSS/"
-			},
-			{
-				"title": "Reference",
-				"content": "MDN CSS Reference",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
-			},
-			{
-				"title": "Examples",
-				"content": "Chapter 4 Examples",
-				"url": "https://github.com/ITCS333/examples/tree/main/ch4"
-			},
-			{
-				"title": "CSS Framework",
-				"content": "Pico CSS",
-				"url": "https://picocss.com/docs"
-			},
-			{
-				"title": "Excercises",
-				"content": "CSS Concepts",
-				"url": "https://itcs333.github.io/examples/ch4/css-quiz.html"
-			}
-			
-		]
-	},
-	{
-		"title": "Week 4 (MAR 02)",
-		"contents": [
-			{
-				"title": "Examples",
-				"content": "Chapter 7 Examples",
-				"url": "https://github.com/ITCS333/examples/tree/main/ch7"
-			},
-			{
-				"title": "Project (Phase 1)",
-				"content": "Design using HTML and CSS",
-				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase1.md"
-			},
-			{
-				"title": "Video",
-				"content": "Introdcution to GitHub",
-				"url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/intro-to-github.mkv"
-			}
-		]
-	},
-	{
-		"title": "Week 5 (MAR 09)",
-		"contents": [
-			{
-				"title": "Reference",
-				"content": "ECMAScript 2024 language specification",
-				"url": "https://262.ecma-international.org/15.0/index.html"
-			},
-			{
-				"title": "Reference",
-				"content": "MDN JavaScript Guide",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
-			},
-			{
-				"title": "Excercises",
-				"content": "JavaScript Fundamentals Excercises",
-				"url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
-			},
-			{
-				"title": "Examples",
-				"content": "Callbacks, Scope & Closures",
-				"url": "https://itcs333.github.io/examples/ch8/callbacks-scope-closures.html"
-			},
-			{
-				"title": "Examples",
-				"content": "Hoisting",
-				"url": "https://itcs333.github.io/examples/ch8/hoisting.html"
-			}
-		]
-	},
-	{
-		"title": "Week 6 (MAR 16)",
-		"contents": [
-			{
-				"title": "Excercises",
-				"content": "JavaScript DOM Manipulation",
-				"url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
-			}
-		]
-	},
-	{
-		"title": "Week 7 (MAR 23)",
-		"contents": [
-			{
-				"title": "Examples",
-				"content": "JavaScript Events Eaxamples",
-				"url": "https://itcs333.github.io/examples/ch9/js-events.html"
-			}
-		]
-	},
-	{
-		"title": "Week 8 (MAR 30)",
-		"contents": [
-			{
-				"title": "Excercises",
-				"content": "JavaScript Events Excercises",
-				"url": "https://itcs333.github.io/examples/ch9/events-quiz.html"
-			},
-			{
-				"title": "Reference",
-				"content": "MDN HTML5 Forms Validation",
-				"url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
-			}
-		]
-	},
-	{
-		"title": "Week 9 (APR 06)",
-		"contents": [
-			{
-				"title": "Exercises",
-				"content": "JavaScript Array Functions",
-				"url": "https://itcs333.github.io/examples/ch10/array-functions.html"
-			},
-			{
-				"title": "Video",
-				"content": "GitHub Pull Request and Merge",
-				"url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/Recordings/GitHub-20250408_140630-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9/Exports/GitHub-20250408_140630-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9.mp4"
-			},
-			{
-				"title": "Exercises",
-				"content": "JavaScript Fetch API Playground",
-				"url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
-			},
   {
-				"title": "Project (Phase 2)",
-				"content": "JavaScript",
-				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase2.md"
-			},
-		]
-	},
-	{
-		"title": "Week 10 (APR 20)",
-		"contents": [
-			{
-				"title": "Video",
-				"content": "How to Create and Use a Replit Account",
-				"url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/Recordings/Replit-20250417_130500-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9/Exports/Replit-20250417_130500-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9.mp4"
-			},
-			{
-				"title": "Reference",
-				"content": "XAMPP",
-				"url": "https://www.apachefriends.org/download.html"
-			},
-			{
-				"title": "Reference",
-				"content": "PHP Manual",
-				"url": "https://www.php.net/manual/en/"
-			},
-			{
-				"title": "Exercises",
-				"content": "PHP Fundamentals Exercises",
-				"url": "https://itcs333.github.io/examples/ch12/intro-to-php.html"
-			},
-			{
-				"title": "Example",
-				"content": "PHP Image Gallery",
-				"url": "https://github.com/ITCS333/examples/tree/main/ch12/php_image_gallery"
-			}
-		]
-	}
+    "title": "Week 1 (FEB 09)",
+    "contents": [
+      {
+        "title": "Text Book",
+        "content": "Fundamentals of Web Development",
+        "url": "https://www.pearson.com/en-us/subject-catalog/p/fundamentals-of-web-development/P200000003214/9780136792857"
+      },
+      {
+        "title": "Reference",
+        "content": "Programming Challenges",
+        "url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
+      },
+      {
+        "title": "Video",
+        "content": "What happens when you type google.com into your browser and press enter?",
+        "url": "https://www.youtube.com/watch?v=dh406O2v_1c"
+      }
+    ]
+  },
+  {
+    "title": "Week 2 (FEB 16)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "W3C HTML Specification",
+        "url": "https://html.spec.whatwg.org/multipage/"
+      },
+      {
+        "title": "Reference",
+        "content": "HTML Tags List",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
+      },
+      {
+        "title": "Reference",
+        "content": "HTML Attributes List",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
+      },
+      {
+        "title": "Examples",
+        "content": "Chapter 3 Examples",
+        "url": "https://github.com/ITCS333/examples/tree/main/ch3"
+      },
+      {
+        "title": "Excercises",
+        "content": "HTML Concepts",
+        "url": "https://itcs333.github.io/examples/ch3/html-quiz.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 3 (FEB 23)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "W3C CSS Specification",
+        "url": "https://www.w3.org/Style/CSS/"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN CSS Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
+      },
+      {
+        "title": "Examples",
+        "content": "Chapter 4 Examples",
+        "url": "https://github.com/ITCS333/examples/tree/main/ch4"
+      },
+      {
+        "title": "CSS Framework",
+        "content": "Pico CSS",
+        "url": "https://picocss.com/docs"
+      },
+      {
+        "title": "Excercises",
+        "content": "CSS Concepts",
+        "url": "https://itcs333.github.io/examples/ch4/css-quiz.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 4 (MAR 02)",
+    "contents": [
+      {
+        "title": "Examples",
+        "content": "Chapter 7 Examples",
+        "url": "https://github.com/ITCS333/examples/tree/main/ch7"
+      },
+      {
+        "title": "Project (Phase 1)",
+        "content": "Design using HTML and CSS",
+        "url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase1.md"
+      },
+      {
+        "title": "Video",
+        "content": "Introdcution to GitHub",
+        "url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/intro-to-github.mkv"
+      }
+    ]
+  },
+  {
+    "title": "Week 5 (MAR 09)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "ECMAScript 2024 language specification",
+        "url": "https://262.ecma-international.org/15.0/index.html"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN JavaScript Guide",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      },
+      {
+        "title": "Excercises",
+        "content": "JavaScript Fundamentals Excercises",
+        "url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
+      },
+      {
+        "title": "Examples",
+        "content": "Callbacks, Scope & Closures",
+        "url": "https://itcs333.github.io/examples/ch8/callbacks-scope-closures.html"
+      },
+      {
+        "title": "Examples",
+        "content": "Hoisting",
+        "url": "https://itcs333.github.io/examples/ch8/hoisting.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 6 (MAR 16)",
+    "contents": [
+      {
+        "title": "Excercises",
+        "content": "JavaScript DOM Manipulation",
+        "url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 7 (MAR 23)",
+    "contents": [
+      {
+        "title": "Examples",
+        "content": "JavaScript Events Eaxamples",
+        "url": "https://itcs333.github.io/examples/ch9/js-events.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 8 (MAR 30)",
+    "contents": [
+      {
+        "title": "Excercises",
+        "content": "JavaScript Events Excercises",
+        "url": "https://itcs333.github.io/examples/ch9/events-quiz.html"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN HTML5 Forms Validation",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation"
+      }
+    ]
+  },
+  {
+    "title": "Week 9 (APR 06)",
+    "contents": [
+      {
+        "title": "Exercises",
+        "content": "JavaScript Array Functions",
+        "url": "https://itcs333.github.io/examples/ch10/array-functions.html"
+      },
+      {
+        "title": "Video",
+        "content": "GitHub Pull Request and Merge",
+        "url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/Recordings/GitHub-20250408_140630-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9/Exports/GitHub-20250408_140630-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9.mp4"
+      },
+      {
+        "title": "Exercises",
+        "content": "JavaScript Fetch API Playground",
+        "url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
+      },
+      {
+        "title": "Project (Phase 2)",
+        "content": "JavaScript",
+        "url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase2.md"
+      }
+    ]
+  },
+  {
+    "title": "Week 10 (APR 20)",
+    "contents": [
+      {
+        "title": "Video",
+        "content": "How to Create and Use a Replit Account",
+        "url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/Recordings/Replit-20250417_130500-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9/Exports/Replit-20250417_130500-%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9.mp4"
+      },
+      {
+        "title": "Reference",
+        "content": "XAMPP",
+        "url": "https://www.apachefriends.org/download.html"
+      },
+      {
+        "title": "Reference",
+        "content": "PHP Manual",
+        "url": "https://www.php.net/manual/en/"
+      },
+      {
+        "title": "Exercises",
+        "content": "PHP Fundamentals Exercises",
+        "url": "https://itcs333.github.io/examples/ch12/intro-to-php.html"
+      },
+      {
+        "title": "Example",
+        "content": "PHP Image Gallery",
+        "url": "https://github.com/ITCS333/examples/tree/main/ch12/php_image_gallery"
+      }
+    ]
+  }
 ]
