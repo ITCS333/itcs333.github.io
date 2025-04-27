@@ -77,7 +77,6 @@
 				"content": "CSS Concepts",
 				"url": "https://itcs333.github.io/examples/ch4/css-quiz.html"
 			}
-			
 		]
 	},
 	{
@@ -182,10 +181,15 @@
 				"title": "Exercises",
 				"content": "JavaScript Fetch API Playground",
 				"url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
+			},
+			{
+				"title": "Project (Phase 2)",
+				"content": "JavaScript",
+				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase2.md"
 			}
 		]
 	},
-	{
+  {
 		"title": "Week 10 (APR 20)",
 		"contents": [
 			{
@@ -202,6 +206,11 @@
 				"title": "Reference",
 				"content": "PHP Manual",
 				"url": "https://www.php.net/manual/en/"
+			},
+			{
+				"title": "Exercises",
+				"content": "PHP Fundamentals Exercises",
+				"url": "https://itcs333.github.io/examples/ch12/intro-to-php.html"
 			},
 			{
 				"title": "Example",
