@@ -43,7 +43,7 @@
 				"url": "https://github.com/ITCS333/examples/tree/main/ch3"
 			},
 			{
-				"title": "Excercises",
+				"title": "Exercises",
 				"content": "HTML Concepts",
 				"url": "https://itcs333.github.io/examples/ch3/html-quiz.html"
 			}
@@ -73,7 +73,7 @@
 				"url": "https://picocss.com/docs"
 			},
 			{
-				"title": "Excercises",
+				"title": "Exercises",
 				"content": "CSS Concepts",
 				"url": "https://itcs333.github.io/examples/ch4/css-quiz.html"
 			}
@@ -94,7 +94,7 @@
 			},
 			{
 				"title": "Video",
-				"content": "Introdcution to GitHub",
+				"content": "Introduction to GitHub",
 				"url": "https://stuuobedu-my.sharepoint.com/:v:/r/personal/asubah_uob_edu_bh/Documents/intro-to-github.mkv"
 			}
 		]
@@ -113,7 +113,7 @@
 				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
 			},
 			{
-				"title": "Excercises",
+				"title": "Exercises",
 				"content": "JavaScript Fundamentals Excercises",
 				"url": "https://itcs333.github.io/examples/ch8/intro-to-js.html"
 			},
@@ -133,7 +133,7 @@
 		"title": "Week 6 (MAR 16)",
 		"contents": [
 			{
-				"title": "Excercises",
+				"title": "Exercises",
 				"content": "JavaScript DOM Manipulation",
 				"url": "https://itcs333.github.io/examples/ch9/dom-manipulation.html"
 			}
@@ -153,7 +153,7 @@
 		"title": "Week 8 (MAR 30)",
 		"contents": [
 			{
-				"title": "Excercises",
+				"title": "Exercises",
 				"content": "JavaScript Events Excercises",
 				"url": "https://itcs333.github.io/examples/ch9/events-quiz.html"
 			},
@@ -228,9 +228,15 @@
 				"url": "https://github.com/ITCS333/itcs333.github.io/blob/master/md/project/phase3.md"
 			},
 			{
-				"title": "Referance",
+				"title": "Reference",
 				"content": "Replit PHP + MySQL",
 				"url": "https://replit.com/@dprevedello/PHP-MySQL"
+			},
+			{
+				"title": "Video",
+				"content": "How to create a Replit PHP + MySQL Application",
+				"url": "https://stuuobedu-my.sharepoint.com/:v:/g/personal/asubah_uob_edu_bh/EW7mUikrYmVImM3G_z2PW-oBp4o4xtksdmZTThB7rVnLwA"
+
 			}
 		]
 	}
