@@ -4,7 +4,7 @@
 In this third phase of the Campus Hub project, you will implement a PHP backend API to support your JavaScript frontend from Phase 2. This will transform your application into a full-stack solution with proper data persistence and retrieval capabilities.
 
 ## Phase Three Deadline
-* **Due Date**: Saturday 10/05/2025 End of Day
+* **Due Date**: ~Saturday 10/05/2025~ Wednesday 14/05/2025 End of Day
 
 ## Your Task
 You will create an API using PHP that connects to a MySQL/MariaDB database. This API will serve as the backend for your assigned module, handling data storage, retrieval, and processing.
@@ -25,14 +25,14 @@ You will create an API using PHP that connects to a MySQL/MariaDB database. This
    * Use prepared statements for all database queries to prevent SQL injection
 
 3. **API Endpoints**
-   * Implement endpoints for listing, filtering, and searching data
+   * Implement endpoints for listing, ~filtering, and searching data~
    * Create endpoints for creating, updating, and deleting records
    * Add pagination support for list endpoints
    * Document all API endpoints with clear descriptions of parameters and responses
 
 4. **Security Considerations**
    * Implement basic input validation and sanitization
-   * Note: Detailed authentication and security requirements will be discussed next week
+   * ~Note: Detailed authentication and security requirements will be discussed next week~
 
 ## Hosting Requirements
 1. **Backend Hosting**
