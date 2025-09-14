@@ -18,5 +18,15 @@
 				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
 			}
 		]
-	}
+	},
+	{
+		"title": "Week 2 (SEP 14)",
+		"contents": [
+      {
+        "title": "Examples",
+        "content": "Chapter 3 (Introduction to HTML)",
+        "url": "https://itcs333.github.io/examples/ch3/"
+      }
+    ]
+  }
 ]
