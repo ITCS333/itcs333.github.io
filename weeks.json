@@ -27,6 +27,11 @@
         "content": "Chapter 3 (Introduction to HTML)",
         "url": "https://itcs333.github.io/examples/ch3/"
       },
+      {
+        "title": "Examples",
+        "content": "Chapter 4 (Introduction to CSS)",
+        "url": "https://itcs333.github.io/examples/ch4/"
+      },
 	    {
         "title": "Reference",
         "content": "MDN HTML Reference",
