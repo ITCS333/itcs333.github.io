@@ -22,26 +22,56 @@
 	{
 		"title": "Week 2 (SEP 14)",
 		"contents": [
-      {
-        "title": "Examples",
-        "content": "Chapter 3 (Introduction to HTML)",
-        "url": "https://itcs333.github.io/examples/ch3/"
-      },
-      {
-        "title": "Examples",
-        "content": "Chapter 4 (Introduction to CSS)",
-        "url": "https://itcs333.github.io/examples/ch4/"
-      },
-	    {
-        "title": "Reference",
-        "content": "MDN HTML Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference"
-      },
-	    {
-        "title": "Reference",
-        "content": "MDN CSS Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
-      }
-    ]
-  }
+			{
+				"title": "Examples",
+				"content": "Chapter 3 (Introduction to HTML)",
+				"url": "https://itcs333.github.io/examples/ch3/"
+			},
+			{
+				"title": "Examples",
+				"content": "Chapter 4 (Introduction to CSS)",
+				"url": "https://itcs333.github.io/examples/ch4/"
+			},
+			{
+				"title": "Reference",
+				"content": "MDN HTML Reference",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference"
+			},
+			{
+				"title": "Reference",
+				"content": "MDN CSS Reference",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
+			}
+		]
+	},
+	{
+		"title": "Week 3 (SEP 21)",
+		"contents": [
+			{
+				"title": "Examples",
+				"content": "Chapter 7 (CSS Layouts)",
+				"url": "https://itcs333.github.io/examples/ch7/"
+			},
+			{
+				"title": "Reference",
+				"content": "PicoCSS Framework",
+				"url": "https://picocss.com/"
+			}
+		]
+	},
+	{
+		"title": "Week 4 (SEP 28)",
+		"contents": [
+			{
+				"title": "Reference",
+				"content": "MDN JavaScript Reference",
+				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+			},
+			{
+				"title": "Examples",
+				"content": "Chapter 8 (Introduction to JavaScript)",
+				"url": "https://itcs333.github.io/examples/ch8/"
+			}
+		]
+	}
 ]
