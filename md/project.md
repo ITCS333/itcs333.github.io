@@ -36,7 +36,7 @@ Upon successful completion of this project, you will be able to:
 
 The project is designed for teams of **five students**. Each student is the **primary owner** of one of the five tasks described below. While you own a specific task, you are expected to collaborate with your team to ensure the entire application is cohesive and functional.
 
-**Crucially**, the student assigned to **Task 0** is responsible for creating the central authentication (login/logout) system. All other team members **must** integrate with and use this system to protect their respective pages.
+**Crucially**, the student assigned to **Task 1** is responsible for creating the central authentication (login/logout) system. All other team members **must** integrate with and use this system to protect their respective pages.
 
 ---
 
