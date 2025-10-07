@@ -73,5 +73,20 @@
 				"url": "https://itcs333.github.io/examples/ch8/"
 			}
 		]
+	},
+	{
+		"title": "Week 5 (OCT 05)",
+		"contents": [
+			{
+				"title": "Reference",
+				"content": "The least amount of CSS for a decent looking site",
+				"url": "https://thecascade.dev/article/least-amount-of-css/"
+			},
+			{
+				"title": "Examples",
+				"content": "Chapter 9 (JavaScript DOM and Events)",
+				"url": "https://itcs333.github.io/examples/ch9/"
+			}
+		]
 	}
 ]
