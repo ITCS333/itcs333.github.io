@@ -88,5 +88,31 @@
 				"url": "https://itcs333.github.io/examples/ch9/"
 			}
 		]
-	}
+	},
+  {
+    "title": "Week 6 (OCT 12)",
+    "contents": [
+      {
+        "title": "Examples",
+        "content": "Local Storage API (Orders Tracker)",
+        "url": "https://itcs333.github.io/examples/ch10/orders.html"
+      }
+    ]
+  },
+  {
+    "title": "Week 7 (OCT 19)",
+    "contents": [
+      {
+        "title": "Examples",
+        "content": "Array Functions in JavaScript",
+        "url": "https://itcs333.github.io/examples/ch10/array-functions.html"
+      },
+      {
+        "title": "Examples",
+        "content": "Fetch API",
+        "url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
+      }
+    ]
+  }
+
 ]
