@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <title>Admin Dashboard – ITCS333</title>
+</head>
+
+<body>
+  <main class="container">
+    <article>
+      <header>
+        <h1 style="text-align: center;">Admin Dashboard – ITCS333</h1>
+      </header>
+
+      <p>Welcome, <strong>Admin</strong>. Use the sections below to manage the course.</p>
+
+      <div class="grid">
+        <section>
+          <h3>Students</h3>
+          <p>View, add, edit, or remove students from the course.</p>
+          <a href="students.html" role="button">Manage Students</a>
+        </section>
+
+        
+        <section>
+          <h3>Weekly Breakdown</h3>
+          <p>Edit the content of each week in the semester.</p>
+          <a href="weeks.html" role="button" class="secondary">View Weeks</a>
+        </section>
+
+        <section>
+          <h3>Assignments</h3>
+          <p>Create and update assignments and due dates.</p>
+          <a href="assignments.html" role="button" class="secondary">View Assignments</a>
+        </section>
+
+        <section>
+          <h3>Discussion Board</h3>
+          <p>Moderate general discussion topics and comments.</p>
+          <a href="forum.html" role="button" class="secondary">View Discussion</a>
+        </section>
+      </div>
+
+      <hr>
+
+      <p>
+        <a href="login.html">Logout</a> ·
+        <a href="index.html">Back to Homepage</a>
+      </p>
+
+      <p><small>
+        (Phase 1) This page is static. Later, only logged-in admins will see it (with PHP sessions and role checks).
+      </small></p>
+    </article>
+  </main>
+</body>
+
+</html>

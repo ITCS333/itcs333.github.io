@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script defer src="main.js"></script>
+  <title>Login – ITCS333</title>
+</head>
+
+<body>
+  <main class="container">
+    <article>
+      <header>
+        <h1 style="text-align: center;">ITCS333 – Course Portal Login</h1>
+      </header>
+
+      <p style="text-align:center;">
+        Please sign in with your course account (Admin or Student).
+      </p>
+
+     <form id="loginForm">
+    <label>
+        Email
+        <input id="username" type="email" placeholder="student@uob.edu.bh" required>
+    </label>
+
+    <label>
+        Password
+        <input id="password" type="password" placeholder="Enter your password" required>
+    </label>
+
+    <button type="submit">Login</button>
+</form>
+
+      <p><small>
+        <strong>Note (Phase 1):</strong> This form is static. In Phase 3, it will send data to a PHP script and start a session.
+      </small></p>
+
+      <p>
+        <a href="index.html">← Back to Homepage</a>
+      </p>
+    </article>
+  </main>
+</body>
+
+</html>
