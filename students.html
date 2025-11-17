@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script defer src="main.js"></script>
+  <title>Student Management – ITCS333</title>
+</head>
+
+
+<body>
+  <main class="container">
+    <article>
+      <header>
+        <h1 style="text-align: center;">Student Management</h1>
+      </header>
+
+      <!-- Form: Create Student -->
+      <section>
+        <h2>Add New Student</h2>
+
+        <form id="addStudentForm">
+
+  <label>
+    Name
+    <input id="studentName" type="text" placeholder="Full name" required>
+  </label>
+
+  <label>
+    Student ID
+    <input id="studentID" type="text" placeholder="202201116" required>
+  </label>
+
+  <label>
+    Email
+    <input id="studentEmail" type="email" placeholder="student@uob.edu.bh" required>
+  </label>
+
+  <label>
+    Default Password
+    <input id="studentPassword" type="text" placeholder="itcs333" required>
+  </label>
+
+  <button type="submit">Create Student</button>
+</form>
+
+
+        <p><small>
+          (Phase 1) This form does not store data yet. In Phase 3 it will send data to PHP to insert into the users table.
+        </small></p>
+      </section>
+
+      <hr>
+
+      <!-- Table: List Students -->
+      <section>
+        <h2>Registered Students</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>202201116</td>
+              <td>Mohamed Ahmed Mesbah</td>
+              <td>m202201116@stu.uob.edu.bh</td>
+              <td>Student</td>
+              <td>
+                <button type="button" class="secondary">Edit</button>
+                <button type="button" class="contrast">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2022XXXXX</td>
+              <td>Example Student</td>
+              <td>example@stu.uob.edu.bh</td>
+              <td>Student</td>
+              <td>
+                <button type="button" class="secondary">Edit</button>
+                <button type="button" class="contrast">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p><small>
+          (Phase 1) Data in this table is fake. Later it will come from the database using PHP & PDO.
+        </small></p>
+      </section>
+
+      <hr>
+
+      <p>
+        <a href="admin.html">← Back to Admin Dashboard</a>
+      </p>
+    </article>
+  </main>
+</body>
+
+</html>
