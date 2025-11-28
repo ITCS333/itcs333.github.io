@@ -1,0 +1,25 @@
+<?php
+include '../includes/functions.php';
+include '../includes/db.php';
+
+if(!isLoggedIn()){
+    header('Location: ../login.php');
+    exit();
+}
+?>
+<?php
+if(isAdmin() && isset($_POST['add_resource'])){
+    $title = $_POST['title'];
+    $desc  = $_POST['description'];
+    $link  = $_POST['link'];
+
+    $stmt = $pdo->prepare("INSERT INTO resources (title, description, link) VALUES (?, ?, ?)");
+    $stmt->execute([$title, $desc, $link]);
+}
+?>
+<form method="POST">
+    <input type="text" name="title" placeholder="Resource Title" required>
+    <textarea name="description" placeholder="Description"></textarea>
+    <input type="text" name="link" placeholder="Link or File URL">
+    <button type="submit" name="add_resource">Add Resource</button>
+</form>
