@@ -1,0 +1,22 @@
+<?php
+include '../includes/functions.php';
+include '../includes/db.php';
+
+if(!isLoggedIn()){
+    header('Location: ../login.php');
+    exit();
+}
+?>
+<?php
+$stmt = $pdo->query("SELECT * FROM resources ORDER BY created_at DESC");
+$resources = $stmt->fetchAll();
+
+foreach($resources as $r){
+    echo "<h3><a href='resource_detail.php?id={$r['id']}'>{$r['title']}</a></h3>";
+    echo "<p>{$r['description']}</p>";
+    if(isAdmin()){
+        echo "<a href='edit_resource.php?id={$r['id']}'>Edit</a> | ";
+        echo "<a href='delete_resource.php?id={$r['id']}'>Delete</a>";
+    }
+}
+?>
