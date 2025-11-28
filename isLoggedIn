@@ -1,0 +1,14 @@
+<?php
+include '../includes/functions.php';
+include '../includes/db.php';
+
+if(!isLoggedIn()){
+    header('Location: ../login.php');
+    exit();
+}
+?>
+if(isAdmin()){
+
+} else {
+  
+}
