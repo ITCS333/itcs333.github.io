@@ -1,6 +1,6 @@
 [
 	{
-		"title": "Week 1 (SEP 07)",
+		"title": "Week 1 (FBW 08)",
 		"contents": [
 			{
 				"title": "Text Book",
@@ -18,101 +18,5 @@
 				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
 			}
 		]
-	},
-	{
-		"title": "Week 2 (SEP 14)",
-		"contents": [
-			{
-				"title": "Examples",
-				"content": "Chapter 3 (Introduction to HTML)",
-				"url": "https://itcs333.github.io/examples/ch3/"
-			},
-			{
-				"title": "Examples",
-				"content": "Chapter 4 (Introduction to CSS)",
-				"url": "https://itcs333.github.io/examples/ch4/"
-			},
-			{
-				"title": "Reference",
-				"content": "MDN HTML Reference",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference"
-			},
-			{
-				"title": "Reference",
-				"content": "MDN CSS Reference",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference"
-			}
-		]
-	},
-	{
-		"title": "Week 3 (SEP 21)",
-		"contents": [
-			{
-				"title": "Examples",
-				"content": "Chapter 7 (CSS Layouts)",
-				"url": "https://itcs333.github.io/examples/ch7/"
-			},
-			{
-				"title": "Reference",
-				"content": "PicoCSS Framework",
-				"url": "https://picocss.com/"
-			}
-		]
-	},
-	{
-		"title": "Week 4 (SEP 28)",
-		"contents": [
-			{
-				"title": "Reference",
-				"content": "MDN JavaScript Reference",
-				"url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
-			},
-			{
-				"title": "Examples",
-				"content": "Chapter 8 (Introduction to JavaScript)",
-				"url": "https://itcs333.github.io/examples/ch8/"
-			}
-		]
-	},
-	{
-		"title": "Week 5 (OCT 05)",
-		"contents": [
-			{
-				"title": "Reference",
-				"content": "The least amount of CSS for a decent looking site",
-				"url": "https://thecascade.dev/article/least-amount-of-css/"
-			},
-			{
-				"title": "Examples",
-				"content": "Chapter 9 (JavaScript DOM and Events)",
-				"url": "https://itcs333.github.io/examples/ch9/"
-			}
-		]
-	},
-  {
-    "title": "Week 6 (OCT 12)",
-    "contents": [
-      {
-        "title": "Examples",
-        "content": "Local Storage API (Orders Tracker)",
-        "url": "https://itcs333.github.io/examples/ch10/orders.html"
-      }
-    ]
-  },
-  {
-    "title": "Week 7 (OCT 19)",
-    "contents": [
-      {
-        "title": "Examples",
-        "content": "Array Functions in JavaScript",
-        "url": "https://itcs333.github.io/examples/ch10/array-functions.html"
-      },
-      {
-        "title": "Examples",
-        "content": "Fetch API",
-        "url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
-      }
-    ]
-  }
-
+	}
 ]
