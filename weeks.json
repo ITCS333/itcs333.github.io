@@ -18,5 +18,25 @@
 				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
 			}
 		]
-	}
+	},
+  {
+    "title": "Week 2 (FEB 15)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "VS Code",
+        "url": "https://code.visualstudio.com/"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN HTML Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTML"
+      },
+      {
+        "title": "Reference",
+        "content": "W3C HTML Specification",
+        "url": "https://html.spec.whatwg.org/"
+      }
+    ]
+  }
 ]
