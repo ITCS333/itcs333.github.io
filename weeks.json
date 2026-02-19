@@ -23,7 +23,7 @@
     "title": "Week 2 (FEB 15)",
     "contents": [
       {
-        "title": "Reference",
+        "title": "Tool",
         "content": "VS Code",
         "url": "https://code.visualstudio.com/"
       },
@@ -36,6 +36,11 @@
         "title": "Reference",
         "content": "W3C HTML Specification",
         "url": "https://html.spec.whatwg.org/"
+      },
+      {
+        "title": "Tool",
+        "content": "Online Web Editor",
+        "url": "./playground/"
       }
     ]
   }
