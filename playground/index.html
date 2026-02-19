@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Playground</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Ace Editor (Core) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+    <!-- Ace Editor (HTML Mode & Theme) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/mode-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/theme-monokai.min.js"></script>
+
+    <style>
+        /* Mobile Tab Active State */
+        .tab-active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+            background-color: #1f2937;
+        }
+        .tab-inactive {
+            color: #9ca3af;
+        }
+
+        /* Responsive Visibility Classes */
+        .mobile-hidden {
+            display: none;
+        }
+        
+        /* Desktop/Tablet Logic (md breakpoint) */
+        @media (min-width: 768px) {
+            .mobile-hidden {
+                display: block !important;
+            }
+            #pane-container {
+                display: flex !important;
+                flex-direction: row !important;
+            }
+            #mobile-tabs {
+                display: none !important;
+            }
+            .pane {
+                width: 50% !important;
+                height: 100% !important;
+            }
+        }
+
+        /* Fix Ace Editor font for different devices */
+        #editor { 
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700 shadow-md z-10 shrink-0">
+        <div class="flex items-center gap-2">
+            <i data-lucide="code-2" class="w-6 h-6 text-blue-400"></i>
+            <h1 class="font-bold text-lg tracking-wide">Dev<span class="text-blue-400">Playground</span></h1>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="shareCode()" class="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-700 hover:bg-gray-600 rounded-md transition-colors border border-gray-600">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Share URL</span>
+            </button>
+            <button onclick="resetCode()" class="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-900/30 hover:bg-red-900/50 text-red-200 rounded-md transition-colors border border-red-900/50">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Reset</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Tabs -->
+    <div id="mobile-tabs" class="flex border-b border-gray-700 bg-gray-800 shrink-0 md:hidden">
+        <button onclick="switchTab('editor')" id="tab-editor" class="flex-1 py-3 text-center text-sm tab-active transition-colors">
+            Code
+        </button>
+        <button onclick="switchTab('preview')" id="tab-preview" class="flex-1 py-3 text-center text-sm tab-inactive transition-colors">
+            Result
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div id="pane-container" class="flex-1 relative flex flex-col md:flex-row overflow-hidden">
+        
+        <!-- Editor Pane -->
+        <div id="pane-editor" class="pane w-full h-full flex flex-col border-r border-gray-700 relative">
+            <!-- Ace Editor Container -->
+            <div id="editor"></div>
+        </div>
+
+        <!-- Preview Pane -->
+        <div id="pane-preview" class="pane w-full h-full mobile-hidden bg-white relative">
+            <iframe id="preview" class="w-full h-full border-none bg-white block"></iframe>
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        URL copied to clipboard!
+    </div>
+
+    <script>
+        // --- 1. Icons & Default Code ---
+        lucide.createIcons();
+
+        const defaultCode = `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { 
+      font-family: 'Segoe UI', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      margin: 0;
+      background: #f0fdf4;
+    }
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      text-align: center;
+      max-width: 300px;
+    }
+    h1 { color: #166534; margin-bottom: 1rem; }
+    p { color: #4b5563; margin-bottom: 1.5rem; line-height: 1.5; }
+    button {
+      background: #166534;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.1s;
+    }
+    button:hover { background: #15803d; transform: scale(1.05); }
+    button:active { transform: scale(0.95); }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hello Students!</h1>
+    <p>This is a live preview. Try changing the <b>CSS</b> colors or the <b>HTML</b> text!</p>
+    <button onclick="changeColor()">Surprise Me</button>
+  </div>
+
+  <script>
+    function changeColor() {
+      const colors = ['#f0fdf4', '#eff6ff', '#fefce8', '#fef2f2'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      document.body.style.background = randomColor;
+    }
+  <\/script>
+</body>
+</html>`;
+
+        // --- 2. Ace Editor Setup ---
+        // Initialize Ace
+        const editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/html");
+        editor.setShowPrintMargin(false);
+        editor.setOptions({
+            fontSize: "14px",
+            wrap: true,
+            tabSize: 2,
+            useWorker: false // Disable web worker to avoid local file CORS issues if opened directly
+        });
+
+        // --- 3. Preview Logic with Debounce ---
+        let timeout = null;
+        
+        function updatePreview() {
+            const code = editor.getValue();
+            const previewFrame = document.getElementById('preview');
+            const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            
+            doc.open();
+            doc.write(code);
+            doc.close();
+        }
+
+        // Debounce: Wait 500ms after typing stops before updating preview
+        editor.session.on('change', function(delta) {
+            clearTimeout(timeout);
+            timeout = setTimeout(updatePreview, 500);
+        });
+
+        // --- 4. URL State & Sharing ---
+
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
+        function loadFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const encodedCode = params.get('code');
+            
+            if (encodedCode) {
+                try {
+                    const decoded = b64_to_utf8(encodedCode);
+                    editor.setValue(decoded, -1); // -1 moves cursor to start
+                } catch (e) {
+                    console.error("Decoding error", e);
+                    editor.setValue(defaultCode, -1);
+                }
+            } else {
+                editor.setValue(defaultCode, -1);
+            }
+            updatePreview();
+        }
+
+        function shareCode() {
+            const code = editor.getValue();
+            const encoded = utf8_to_b64(code);
+            const url = new URL(window.location);
+            url.searchParams.set('code', encoded);
+            
+            window.history.pushState({}, '', url);
+
+            navigator.clipboard.writeText(url.toString()).then(() => {
+                showToast("Link copied to clipboard!");
+            }).catch(err => {
+                showToast("URL updated in address bar");
+            });
+        }
+
+        function resetCode() {
+            if(confirm("Are you sure? This will lose current changes.")) {
+                editor.setValue(defaultCode, -1);
+                const url = new URL(window.location);
+                url.searchParams.delete('code');
+                window.history.pushState({}, '', url);
+            }
+        }
+
+        // --- 5. UI Helpers ---
+
+        function switchTab(tab) {
+            const paneEditor = document.getElementById('pane-editor');
+            const panePreview = document.getElementById('pane-preview');
+            const tabEditor = document.getElementById('tab-editor');
+            const tabPreview = document.getElementById('tab-preview');
+
+            if (tab === 'editor') {
+                paneEditor.classList.remove('mobile-hidden');
+                panePreview.classList.add('mobile-hidden');
+                
+                tabEditor.classList.add('tab-active');
+                tabEditor.classList.remove('tab-inactive');
+                tabPreview.classList.remove('tab-active');
+                tabPreview.classList.add('tab-inactive');
+            } else {
+                paneEditor.classList.add('mobile-hidden');
+                panePreview.classList.remove('mobile-hidden');
+                
+                tabPreview.classList.add('tab-active');
+                tabPreview.classList.remove('tab-inactive');
+                tabEditor.classList.remove('tab-active');
+                tabEditor.classList.add('tab-inactive');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // --- 6. Start ---
+        window.onload = loadFromUrl;
+
+    </script>
+</body>
+</html>
