@@ -26,29 +26,6 @@
             color: #9ca3af;
         }
 
-        /* Responsive Visibility Classes */
-        .mobile-hidden {
-            display: none;
-        }
-        
-        /* Desktop/Tablet Logic (md breakpoint) */
-        @media (min-width: 768px) {
-            .mobile-hidden {
-                display: block !important;
-            }
-            #pane-container {
-                display: flex !important;
-                flex-direction: row !important;
-            }
-            #mobile-tabs {
-                display: none !important;
-            }
-            .pane {
-                width: 50% !important;
-                height: 100% !important;
-            }
-        }
-
         /* Fix Ace Editor font for different devices */
         #editor { 
             width: 100%;
@@ -89,16 +66,23 @@
     </div>
 
     <!-- Main Container -->
+    <!-- 
+       Flex layout logic:
+       - Mobile: flex-col, children are toggled via 'hidden' class.
+       - Desktop (md): flex-row, 'hidden' classes are overridden by 'md:flex' and 'md:block'.
+    -->
     <div id="pane-container" class="flex-1 relative flex flex-col md:flex-row overflow-hidden">
         
         <!-- Editor Pane -->
-        <div id="pane-editor" class="pane w-full h-full flex flex-col border-r border-gray-700 relative">
+        <!-- Initially visible on mobile (flex), always visible on desktop (md:flex) -->
+        <div id="pane-editor" class="pane flex flex-col relative w-full h-full md:w-1/2 md:flex border-r border-gray-700">
             <!-- Ace Editor Container -->
             <div id="editor"></div>
         </div>
 
         <!-- Preview Pane -->
-        <div id="pane-preview" class="pane w-full h-full mobile-hidden bg-white relative">
+        <!-- Initially hidden on mobile (hidden), visible on desktop (md:flex) -->
+        <div id="pane-preview" class="pane hidden flex-col relative w-full h-full md:w-1/2 md:flex bg-white">
             <iframe id="preview" class="w-full h-full border-none bg-white block"></iframe>
         </div>
 
@@ -169,7 +153,6 @@
 </html>`;
 
         // --- 2. Ace Editor Setup ---
-        // Initialize Ace
         const editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/html");
@@ -178,7 +161,7 @@
             fontSize: "14px",
             wrap: true,
             tabSize: 2,
-            useWorker: false // Disable web worker to avoid local file CORS issues if opened directly
+            useWorker: false 
         });
 
         // --- 3. Preview Logic with Debounce ---
@@ -194,14 +177,12 @@
             doc.close();
         }
 
-        // Debounce: Wait 500ms after typing stops before updating preview
         editor.session.on('change', function(delta) {
             clearTimeout(timeout);
             timeout = setTimeout(updatePreview, 500);
         });
 
         // --- 4. URL State & Sharing ---
-
         function utf8_to_b64(str) {
             return window.btoa(unescape(encodeURIComponent(str)));
         }
@@ -217,7 +198,7 @@
             if (encodedCode) {
                 try {
                     const decoded = b64_to_utf8(encodedCode);
-                    editor.setValue(decoded, -1); // -1 moves cursor to start
+                    editor.setValue(decoded, -1);
                 } catch (e) {
                     console.error("Decoding error", e);
                     editor.setValue(defaultCode, -1);
@@ -233,9 +214,7 @@
             const encoded = utf8_to_b64(code);
             const url = new URL(window.location);
             url.searchParams.set('code', encoded);
-            
             window.history.pushState({}, '', url);
-
             navigator.clipboard.writeText(url.toString()).then(() => {
                 showToast("Link copied to clipboard!");
             }).catch(err => {
@@ -261,17 +240,30 @@
             const tabPreview = document.getElementById('tab-preview');
 
             if (tab === 'editor') {
-                paneEditor.classList.remove('mobile-hidden');
-                panePreview.classList.add('mobile-hidden');
+                // Show Editor, Hide Preview
+                paneEditor.classList.remove('hidden');
+                paneEditor.classList.add('flex');
                 
+                panePreview.classList.add('hidden');
+                panePreview.classList.remove('flex');
+                
+                // Tab Styles
                 tabEditor.classList.add('tab-active');
                 tabEditor.classList.remove('tab-inactive');
                 tabPreview.classList.remove('tab-active');
                 tabPreview.classList.add('tab-inactive');
-            } else {
-                paneEditor.classList.add('mobile-hidden');
-                panePreview.classList.remove('mobile-hidden');
                 
+                // Refresh Ace Editor layout
+                editor.resize();
+            } else {
+                // Hide Editor, Show Preview
+                paneEditor.classList.add('hidden');
+                paneEditor.classList.remove('flex');
+                
+                panePreview.classList.remove('hidden');
+                panePreview.classList.add('flex');
+                
+                // Tab Styles
                 tabPreview.classList.add('tab-active');
                 tabPreview.classList.remove('tab-inactive');
                 tabEditor.classList.remove('tab-active');
