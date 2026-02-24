@@ -1,24 +1,24 @@
 [
-	{
-		"title": "Week 1 (FEB 08)",
-		"contents": [
-			{
-				"title": "Text Book",
-				"content": "Fundamentals of Web Development",
-				"url": "https://www.pearson.com/en-us/subject-catalog/p/fundamentals-of-web-development/P200000003214/9780136792857"
-			},
-			{
-				"title": "Reference",
-				"content": "Programming Challenges",
-				"url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
-			},
-			{
-				"title": "Video",
-				"content": "What happens when you type google.com into your browser and press enter?",
-				"url": "https://www.youtube.com/watch?v=dh406O2v_1c"
-			}
-		]
-	},
+  {
+    "title": "Week 1 (FEB 08)",
+    "contents": [
+      {
+        "title": "Text Book",
+        "content": "Fundamentals of Web Development",
+        "url": "https://www.pearson.com/en-us/subject-catalog/p/fundamentals-of-web-development/P200000003214/9780136792857"
+      },
+      {
+        "title": "Reference",
+        "content": "Programming Challenges",
+        "url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
+      },
+      {
+        "title": "Video",
+        "content": "What happens when you type google.com into your browser and press enter?",
+        "url": "https://www.youtube.com/watch?v=dh406O2v_1c"
+      }
+    ]
+  },
   {
     "title": "Week 2 (FEB 15)",
     "contents": [
@@ -62,8 +62,6 @@
         "content": "CSS Examples",
         "url": "https://itcs333.github.io/examples/ch4/"
       }
-],
+    ]
   }
 ]
-
-
