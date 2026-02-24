@@ -41,7 +41,25 @@
         "title": "Tool",
         "content": "Online Web Editor",
         "url": "./playground/"
+      },
+      {
+        "title": "Examples",
+        "content": "HTML Examples",
+        "url": "https://itcs333.github.io/examples/ch3/"
       }
     ]
-  }
+  },
+  {
+    "title": "Week 3 (FEB 22)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN CSS Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS"
+      },
+      {
+        "title": "Examples",
+        "content": "CSS Examples",
+        "url": "https://itcs333.github.io/examples/ch4/"
+      }
 ]
