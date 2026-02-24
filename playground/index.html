@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Code Playground</title>
+  <title>Live Code Editor</title>
 
   <!-- CodeMirror 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css" />
@@ -116,13 +116,7 @@
       overflow: hidden;
     }
 
-    /* ── Editor Panel ─────────────────────────────────────── */
-    .editor-panel {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
+    /* ── Panel Label ──────────────────────────────────────── */
     .panel-label {
       font-size: 0.72rem;
       font-weight: 700;
@@ -133,23 +127,31 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      display: none; /* hidden on mobile, shown on desktop */
     }
 
-    /* CodeMirror fills its panel */
-    .CodeMirror {
+    /* ── CodeMirror wrapper ───────────────────────────────── */
+    .cm-wrap {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .cm-wrap .CodeMirror {
       flex: 1;
       height: 100% !important;
       font-size: 0.9rem;
       line-height: 1.6;
       font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
     }
-    .cm-wrap {
-      flex: 1;
-      overflow: hidden;
+
+    /* ── Editor Panels ────────────────────────────────────── */
+    .editor-panel {
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
-    .cm-wrap .CodeMirror { height: 100% !important; }
 
     /* ── Preview Panel ────────────────────────────────────── */
     #preview-panel {
@@ -165,7 +167,7 @@
       background: #fff;
     }
 
-    /* ── Divider (desktop only) ───────────────────────────── */
+    /* ── Divider ──────────────────────────────────────────── */
     #divider {
       width: 5px;
       background: var(--border);
@@ -174,7 +176,8 @@
       transition: background 0.15s;
       display: none;
     }
-    #divider:hover, #divider.dragging { background: var(--accent); }
+    #divider:hover,
+    #divider.dragging { background: var(--accent); }
 
     /* ── Toast ────────────────────────────────────────────── */
     #toast {
@@ -199,54 +202,82 @@
     }
 
     /* ════════════════════════════════════════════════════════
-       RESPONSIVE BREAKPOINTS
-       ════════════════════════════════════════════════════════ */
+       MOBILE  (default / < 768px)
+       One panel fills the full viewport at a time.
+    ════════════════════════════════════════════════════════ */
 
-    /* ── Mobile (default): stacked tabs ──────────────────── */
-    .editor-panel { width: 100%; height: 100%; }
+    /* #panels is a flex row; on mobile we want whichever
+       panel is visible to fill it completely */
+    #panels {
+      position: relative;
+    }
 
-    /* Only one panel visible at a time */
+    /* editor-column becomes invisible layout wrapper on mobile */
+    #editor-column {
+      display: contents; /* children participate directly in #panels */
+    }
+
+    .editor-panel,
+    #preview-panel {
+      position: absolute;
+      inset: 0;          /* fill #panels exactly */
+      width: 100%;
+      height: 100%;
+    }
+
+    /* hidden on mobile = truly gone */
     .editor-panel.hidden,
     #preview-panel.hidden {
       display: none;
     }
 
-    /* On mobile, editor sub-tabs (HTML/CSS/JS) are hidden;
-       the top tab bar handles switching */
-    .panel-label { display: none; }
-
-    /* ── Tablet / Desktop (≥ 768px): side by side ─────────── */
+    /* ════════════════════════════════════════════════════════
+       TABLET / DESKTOP  (≥ 768px)
+       Side-by-side. Editors stacked in left column.
+    ════════════════════════════════════════════════════════ */
     @media (min-width: 768px) {
-      /* Hide the mobile tab bar */
+
+      /* Kill mobile tab bar */
       #tab-bar { display: none; }
 
-      /* Restore labels */
+      /* Show panel labels */
       .panel-label { display: block; }
 
-      /* Stack the three editors vertically on the left */
+      /* Restore normal flow — editor-column is a real flex child */
       #editor-column {
         display: flex;
         flex-direction: column;
-        overflow: hidden;
         flex-shrink: 0;
-        /* width set by JS / default 50% */
         width: 50%;
+        overflow: hidden;
       }
 
+      /* Panels are normal flex children again, NOT absolutely positioned */
+      .editor-panel,
+      #preview-panel {
+        position: static;
+        width: auto;
+        height: auto;
+        inset: auto;
+      }
+
+      /* Each editor takes equal vertical space in the column */
       .editor-panel {
         flex: 1;
-        width: 100% !important;
+        min-height: 0;
         border-bottom: 1px solid var(--border);
-        /* Override mobile hidden state */
-        display: flex !important;
+        display: flex !important; /* override .hidden from mobile state */
       }
       .editor-panel:last-child { border-bottom: none; }
 
+      /* Preview fills remaining horizontal space */
       #preview-panel {
         flex: 1;
+        min-width: 0;
         display: flex !important;
       }
 
+      /* Show drag divider */
       #divider { display: block; }
     }
   </style>
@@ -255,7 +286,7 @@
 
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
 <div id="toolbar">
-  <h1>ITCS333 Playground</h1>
+  <h1>⚡ Live Editor</h1>
   <button class="toolbar-btn run" id="btn-run">▶ Run</button>
   <button class="toolbar-btn" id="btn-share">⎘ Share</button>
   <button class="toolbar-btn" id="btn-clear">✕ Clear</button>
@@ -277,7 +308,6 @@
 
     <!-- Left column: 3 editors -->
     <div id="editor-column">
-
       <div class="editor-panel" id="html-panel">
         <div class="panel-label">HTML</div>
         <div class="cm-wrap" id="html-cm-wrap"></div>
@@ -292,13 +322,12 @@
         <div class="panel-label">JS</div>
         <div class="cm-wrap" id="js-cm-wrap"></div>
       </div>
+    </div>
 
-    </div><!-- /editor-column -->
-
-    <!-- Drag divider -->
+    <!-- Drag divider (desktop only) -->
     <div id="divider"></div>
 
-    <!-- Right: Preview -->
+    <!-- Preview -->
     <div id="preview-panel" class="hidden">
       <div class="panel-label">Preview</div>
       <iframe id="preview-frame" sandbox="allow-scripts allow-modals"></iframe>
@@ -346,14 +375,14 @@ console.log('Hello from the editor!');`
 };
 
 /* ═══════════════════════════════════════════════════════════
-   2.  URL PRELOAD  (Base64-encoded JSON)
+   2.  URL PRELOAD
 ═══════════════════════════════════════════════════════════ */
 function loadFromURL() {
   try {
     const params = new URLSearchParams(window.location.search);
     const encoded = params.get('code');
     if (!encoded) return null;
-    const json = atob(encoded);
+    const json = decodeURIComponent(escape(atob(encoded)));
     return JSON.parse(json);
   } catch (e) {
     console.warn('Could not parse ?code= param', e);
@@ -406,25 +435,18 @@ function buildDocument() {
   const css  = cssEditor.getValue();
   const js   = jsEditor.getValue();
 
-  // If user wrote a full HTML doc, inject CSS/JS into it.
-  // Otherwise wrap everything.
   const isFullDoc = /<!doctype/i.test(html) || /<html/i.test(html);
 
   if (isFullDoc) {
     let doc = html;
-    // inject <style> before </head> or at top
-    const styleTag = `<style>${css}</style>`;
+    const styleTag  = `<style>${css}</style>`;
     const scriptTag = `<script>${js}<\/script>`;
-    if (/<\/head>/i.test(doc)) {
-      doc = doc.replace(/<\/head>/i, `${styleTag}\n</head>`);
-    } else {
-      doc = styleTag + '\n' + doc;
-    }
-    if (/<\/body>/i.test(doc)) {
-      doc = doc.replace(/<\/body>/i, `${scriptTag}\n</body>`);
-    } else {
-      doc = doc + '\n' + scriptTag;
-    }
+    doc = /<\/head>/i.test(doc)
+      ? doc.replace(/<\/head>/i, `${styleTag}\n</head>`)
+      : styleTag + '\n' + doc;
+    doc = /<\/body>/i.test(doc)
+      ? doc.replace(/<\/body>/i, `${scriptTag}\n</body>`)
+      : doc + '\n' + scriptTag;
     return doc;
   }
 
@@ -442,16 +464,11 @@ ${html}
 }
 
 function runPreview() {
-  const frame = document.getElementById('preview-frame');
-  const doc = buildDocument();
-  // Use srcdoc for sandboxed, no-backend preview
-  frame.srcdoc = doc;
+  document.getElementById('preview-frame').srcdoc = buildDocument();
 }
 
-// Auto-run on load
 window.addEventListener('load', () => {
   runPreview();
-  // Let CodeMirror measure itself correctly
   setTimeout(() => {
     htmlEditor.refresh();
     cssEditor.refresh();
@@ -462,7 +479,7 @@ window.addEventListener('load', () => {
 document.getElementById('btn-run').addEventListener('click', runPreview);
 
 /* ═══════════════════════════════════════════════════════════
-   5.  SHARE  (copies URL with encoded state)
+   5.  SHARE
 ═══════════════════════════════════════════════════════════ */
 function getShareURL() {
   const payload = JSON.stringify({
@@ -470,7 +487,7 @@ function getShareURL() {
     css:  cssEditor.getValue(),
     js:   jsEditor.getValue(),
   });
-  const encoded = btoa(unescape(encodeURIComponent(payload))); // UTF-8 safe
+  const encoded = btoa(unescape(encodeURIComponent(payload)));
   const url = new URL(window.location.href);
   url.search = '';
   url.searchParams.set('code', encoded);
@@ -478,8 +495,7 @@ function getShareURL() {
 }
 
 document.getElementById('btn-share').addEventListener('click', () => {
-  const url = getShareURL();
-  navigator.clipboard.writeText(url).then(() => showToast('Link copied! 🎉'));
+  navigator.clipboard.writeText(getShareURL()).then(() => showToast('Link copied! 🎉'));
 });
 
 /* ═══════════════════════════════════════════════════════════
@@ -496,7 +512,7 @@ document.getElementById('btn-clear').addEventListener('click', () => {
 /* ═══════════════════════════════════════════════════════════
    7.  MOBILE TABS
 ═══════════════════════════════════════════════════════════ */
-const tabBtns = document.querySelectorAll('.tab-btn');
+const tabBtns   = document.querySelectorAll('.tab-btn');
 const allPanels = [
   document.getElementById('html-panel'),
   document.getElementById('css-panel'),
@@ -510,11 +526,9 @@ tabBtns.forEach(btn => {
     btn.classList.add('active');
 
     const targetId = btn.dataset.target;
-    allPanels.forEach(p => {
-      p.classList.toggle('hidden', p.id !== targetId);
-    });
+    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== targetId));
 
-    // Refresh editors after becoming visible
+    // Refresh whichever editor just became visible
     if (targetId === 'html-panel') htmlEditor.refresh();
     if (targetId === 'css-panel')  cssEditor.refresh();
     if (targetId === 'js-panel')   jsEditor.refresh();
@@ -527,22 +541,20 @@ tabBtns.forEach(btn => {
 const divider      = document.getElementById('divider');
 const editorColumn = document.getElementById('editor-column');
 const panelsEl     = document.getElementById('panels');
-
 let isDragging = false;
 
-divider.addEventListener('mousedown', (e) => {
+divider.addEventListener('mousedown', e => {
   isDragging = true;
   divider.classList.add('dragging');
-  document.body.style.cursor = 'col-resize';
-  document.body.style.userSelect = 'none';
+  document.body.style.cssText += 'cursor:col-resize;user-select:none;';
   e.preventDefault();
 });
 
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', e => {
   if (!isDragging) return;
   const rect = panelsEl.getBoundingClientRect();
   let pct = (e.clientX - rect.left) / rect.width * 100;
-  pct = Math.min(Math.max(pct, 20), 80); // clamp 20%–80%
+  pct = Math.min(Math.max(pct, 20), 80);
   editorColumn.style.width = pct + '%';
 });
 
@@ -558,25 +570,20 @@ document.addEventListener('mouseup', () => {
 });
 
 /* ═══════════════════════════════════════════════════════════
-   9.  RESPONSIVE: detect breakpoint changes
+   9.  BREAKPOINT WATCHER
 ═══════════════════════════════════════════════════════════ */
 const desktopMQ = window.matchMedia('(min-width: 768px)');
 
 function onBreakpointChange(e) {
   if (e.matches) {
-    // Switched to desktop — ensure all panels visible
+    // Desktop: remove all hidden classes so all panels show
     allPanels.forEach(p => p.classList.remove('hidden'));
-    // Re-show preview panel (it might be hidden from mobile state)
-    document.getElementById('preview-panel').classList.remove('hidden');
   } else {
-    // Switched to mobile — show only the active tab's panel
+    // Mobile: only the active tab's panel should show
     const activeTab = document.querySelector('.tab-btn.active');
-    const targetId = activeTab?.dataset.target ?? 'html-panel';
-    allPanels.forEach(p => {
-      p.classList.toggle('hidden', p.id !== targetId);
-    });
+    const targetId  = activeTab?.dataset.target ?? 'html-panel';
+    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== targetId));
   }
-  // Refresh editors after layout shift
   setTimeout(() => {
     htmlEditor.refresh();
     cssEditor.refresh();
@@ -585,11 +592,10 @@ function onBreakpointChange(e) {
 }
 
 desktopMQ.addEventListener('change', onBreakpointChange);
-// Run once on load to set initial state
 onBreakpointChange(desktopMQ);
 
 /* ═══════════════════════════════════════════════════════════
-   10. TOAST HELPER
+   10. TOAST
 ═══════════════════════════════════════════════════════════ */
 function showToast(msg) {
   const toast = document.getElementById('toast');
