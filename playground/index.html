@@ -3,11 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Code Editor</title>
+  <title>Live Code Editor</title>
 
-  <!-- CodeMirror 5 -->
+  <!-- CodeMirror 5 core -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css" />
+
+  <!-- Themes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/dracula.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/monokai.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/material.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/nord.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/solarized.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/eclipse.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/mdn-like.min.css" />
+
+  <!-- CodeMirror JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/xml/xml.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/css/css.min.js"></script>
@@ -16,8 +27,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closetag.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closebrackets.min.js"></script>
 
+  <!-- LZString compression -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+
   <style>
-    /* ── Reset & Base ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -26,6 +39,7 @@
       --border:    #44475a;
       --accent:    #bd93f9;
       --accent2:   #50fa7b;
+      --accent3:   #ff79c6;
       --text:      #f8f8f2;
       --muted:     #6272a4;
       --tab-h:     42px;
@@ -71,18 +85,43 @@
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .toolbar-btn:hover { background: var(--muted); }
-    .toolbar-btn.run   { background: var(--accent2); color: #1e1f29; font-weight: 700; }
+    .toolbar-btn:hover   { background: var(--muted); }
+    .toolbar-btn.run     { background: var(--accent2); color: #1e1f29; font-weight: 700; }
     .toolbar-btn.run:hover { filter: brightness(1.1); }
 
-    /* ── App Layout ───────────────────────────────────────── */
+    /* Share button gets a spinner state */
+    .toolbar-btn.loading {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #theme-select {
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      outline: none;
+      appearance: auto;
+    }
+    #theme-select:focus { outline: 2px solid var(--accent); }
+
+    .theme-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── App ──────────────────────────────────────────────── */
     #app {
       display: flex;
       flex-direction: column;
       height: calc(100vh - var(--toolbar-h));
     }
 
-    /* ── Mobile Tab Bar ───────────────────────────────────── */
+    /* ── Tab Bar ──────────────────────────────────────────── */
     #tab-bar {
       display: flex;
       background: var(--surface);
@@ -103,20 +142,17 @@
       transition: color 0.15s, border-color 0.15s;
       letter-spacing: 0.03em;
     }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
+    .tab-btn:hover  { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-    /* ── Panels Container ─────────────────────────────────── */
+    /* ── Panels ───────────────────────────────────────────── */
     #panels {
       flex: 1;
       display: flex;
       overflow: hidden;
+      position: relative;
     }
 
-    /* ── Panel Label ──────────────────────────────────────── */
     .panel-label {
       font-size: 0.72rem;
       font-weight: 700;
@@ -127,10 +163,9 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
-      display: none; /* hidden on mobile, shown on desktop */
+      display: none;
     }
 
-    /* ── CodeMirror wrapper ───────────────────────────────── */
     .cm-wrap {
       flex: 1;
       overflow: hidden;
@@ -146,14 +181,12 @@
       font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
     }
 
-    /* ── Editor Panels ────────────────────────────────────── */
     .editor-panel {
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* ── Preview Panel ────────────────────────────────────── */
     #preview-panel {
       display: flex;
       flex-direction: column;
@@ -167,7 +200,6 @@
       background: #fff;
     }
 
-    /* ── Divider ──────────────────────────────────────────── */
     #divider {
       width: 5px;
       background: var(--border);
@@ -195,55 +227,35 @@
       transition: transform 0.3s, opacity 0.3s;
       pointer-events: none;
       z-index: 999;
+      text-align: center;
     }
     #toast.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
-
-    /* ════════════════════════════════════════════════════════
-       MOBILE  (default / < 768px)
-       One panel fills the full viewport at a time.
-    ════════════════════════════════════════════════════════ */
-
-    /* #panels is a flex row; on mobile we want whichever
-       panel is visible to fill it completely */
-    #panels {
-      position: relative;
+    #toast.error {
+      background: var(--accent3);
     }
 
-    /* editor-column becomes invisible layout wrapper on mobile */
-    #editor-column {
-      display: contents; /* children participate directly in #panels */
-    }
+    /* ── Mobile ───────────────────────────────────────────── */
+    #editor-column { display: contents; }
 
     .editor-panel,
     #preview-panel {
       position: absolute;
-      inset: 0;          /* fill #panels exactly */
+      inset: 0;
       width: 100%;
       height: 100%;
     }
 
-    /* hidden on mobile = truly gone */
     .editor-panel.hidden,
-    #preview-panel.hidden {
-      display: none;
-    }
+    #preview-panel.hidden { display: none; }
 
-    /* ════════════════════════════════════════════════════════
-       TABLET / DESKTOP  (≥ 768px)
-       Side-by-side. Editors stacked in left column.
-    ════════════════════════════════════════════════════════ */
+    /* ── Desktop ──────────────────────────────────────────── */
     @media (min-width: 768px) {
-
-      /* Kill mobile tab bar */
-      #tab-bar { display: none; }
-
-      /* Show panel labels */
+      #tab-bar     { display: none; }
       .panel-label { display: block; }
 
-      /* Restore normal flow — editor-column is a real flex child */
       #editor-column {
         display: flex;
         flex-direction: column;
@@ -252,7 +264,6 @@
         overflow: hidden;
       }
 
-      /* Panels are normal flex children again, NOT absolutely positioned */
       .editor-panel,
       #preview-panel {
         position: static;
@@ -261,41 +272,56 @@
         inset: auto;
       }
 
-      /* Each editor takes equal vertical space in the column */
       .editor-panel {
         flex: 1;
         min-height: 0;
         border-bottom: 1px solid var(--border);
-        display: flex !important; /* override .hidden from mobile state */
+        display: flex !important;
       }
       .editor-panel:last-child { border-bottom: none; }
 
-      /* Preview fills remaining horizontal space */
       #preview-panel {
         flex: 1;
         min-width: 0;
         display: flex !important;
       }
 
-      /* Show drag divider */
-      #divider { display: block; }
+      #divider     { display: block; }
+      .theme-label { display: inline; }
+    }
+
+    @media (max-width: 480px) {
+      .theme-label { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Toolbar ─────────────────────────────────────────────── -->
 <div id="toolbar">
-  <h1>🌐 ITCS333 Playground</h1>
+  <h1>⚡ Live Editor</h1>
   <button class="toolbar-btn run" id="btn-run">▶ Run</button>
   <button class="toolbar-btn" id="btn-share">⎘ Share</button>
   <button class="toolbar-btn" id="btn-clear">✕ Clear</button>
+  <span class="theme-label">Theme:</span>
+  <select id="theme-select" title="Editor theme">
+    <optgroup label="Dark">
+      <option value="dracula">Dracula</option>
+      <option value="monokai">Monokai</option>
+      <option value="material">Material</option>
+      <option value="nord">Nord</option>
+      <option value="solarized dark">Solarized Dark</option>
+    </optgroup>
+    <optgroup label="Light">
+      <option value="default">Default (Light)</option>
+      <option value="solarized light">Solarized Light</option>
+      <option value="github">GitHub</option>
+      <option value="eclipse">Eclipse</option>
+      <option value="mdn-like">MDN-like</option>
+    </optgroup>
+  </select>
 </div>
 
-<!-- ── App ────────────────────────────────────────────────── -->
 <div id="app">
-
-  <!-- Mobile tab switcher -->
   <div id="tab-bar">
     <button class="tab-btn active" data-target="html-panel">HTML</button>
     <button class="tab-btn"        data-target="css-panel">CSS</button>
@@ -303,38 +329,30 @@
     <button class="tab-btn"        data-target="preview-panel">Preview</button>
   </div>
 
-  <!-- Panels -->
   <div id="panels">
-
-    <!-- Left column: 3 editors -->
     <div id="editor-column">
       <div class="editor-panel" id="html-panel">
         <div class="panel-label">HTML</div>
         <div class="cm-wrap" id="html-cm-wrap"></div>
       </div>
-
       <div class="editor-panel hidden" id="css-panel">
         <div class="panel-label">CSS</div>
         <div class="cm-wrap" id="css-cm-wrap"></div>
       </div>
-
       <div class="editor-panel hidden" id="js-panel">
         <div class="panel-label">JS</div>
         <div class="cm-wrap" id="js-cm-wrap"></div>
       </div>
     </div>
 
-    <!-- Drag divider (desktop only) -->
     <div id="divider"></div>
 
-    <!-- Preview -->
     <div id="preview-panel" class="hidden">
       <div class="panel-label">Preview</div>
       <iframe id="preview-frame" sandbox="allow-scripts allow-modals"></iframe>
     </div>
-
-  </div><!-- /panels -->
-</div><!-- /app -->
+  </div>
+</div>
 
 <div id="toast"></div>
 
@@ -366,43 +384,89 @@ body {
   background: #f0f4ff;
   color: #1a1a2e;
 }
-
-h1 {
-  color: #6c63ff;
-}`,
-  js: `// Your JavaScript here
-console.log('Hello from the editor!');`
+h1 { color: #6c63ff; }`,
+  js: `// Your JavaScript here\nconsole.log('Hello from the editor!');`
 };
 
 /* ═══════════════════════════════════════════════════════════
-   2.  URL PRELOAD
+   2.  ENCODE / DECODE  (LZString, with Base64 fallback)
+═══════════════════════════════════════════════════════════ */
+function encodeState(obj) {
+  return LZString.compressToEncodedURIComponent(JSON.stringify(obj));
+}
+
+function decodeState(encoded) {
+  // Try LZString first
+  try {
+    const json = LZString.decompressFromEncodedURIComponent(encoded);
+    if (json) return JSON.parse(json);
+  } catch (_) {}
+  // Fall back to old plain Base64
+  try {
+    return JSON.parse(decodeURIComponent(escape(atob(encoded))));
+  } catch (_) {}
+  return null;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3.  BUILD THE LONG URL  (used both for sharing & shortening)
+═══════════════════════════════════════════════════════════ */
+function buildLongURL() {
+  const encoded = encodeState({
+    html:  htmlEditor.getValue(),
+    css:   cssEditor.getValue(),
+    js:    jsEditor.getValue(),
+    theme: document.getElementById('theme-select').value,
+  });
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('code', encoded);
+  return url.toString();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4.  URL SHORTENER  (is.gd — free, CORS-friendly, no API key)
+       Falls back to the long LZString URL if it fails.
+═══════════════════════════════════════════════════════════ */
+async function shortenURL(longURL) {
+  const api = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longURL)}`;
+  const res  = await fetch(api);
+  if (!res.ok) throw new Error(`is.gd returned ${res.status}`);
+  const data = await res.json();
+  if (!data.shorturl) throw new Error('No shorturl in response');
+  return data.shorturl;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5.  URL PRELOAD
 ═══════════════════════════════════════════════════════════ */
 function loadFromURL() {
   try {
-    const params = new URLSearchParams(window.location.search);
-    const encoded = params.get('code');
-    if (!encoded) return null;
-    const json = decodeURIComponent(escape(atob(encoded)));
-    return JSON.parse(json);
+    const encoded = new URLSearchParams(window.location.search).get('code');
+    return encoded ? decodeState(encoded) : null;
   } catch (e) {
     console.warn('Could not parse ?code= param', e);
     return null;
   }
 }
 
-const preloaded = loadFromURL();
+const preloaded    = loadFromURL();
+const savedTheme   = localStorage.getItem('cm-theme') ?? 'dracula';
+const initialTheme = preloaded?.theme ?? savedTheme;
+
 const initial = {
-  html: preloaded?.html ?? DEFAULT.html,
-  css:  preloaded?.css  ?? DEFAULT.css,
-  js:   preloaded?.js   ?? DEFAULT.js,
+  html:  preloaded?.html  ?? DEFAULT.html,
+  css:   preloaded?.css   ?? DEFAULT.css,
+  js:    preloaded?.js    ?? DEFAULT.js,
+  theme: initialTheme,
 };
 
 /* ═══════════════════════════════════════════════════════════
-   3.  CODEMIRROR INSTANCES
+   6.  CODEMIRROR INSTANCES
 ═══════════════════════════════════════════════════════════ */
-const cmOptions = (mode) => ({
+const cmOpts = (mode) => ({
   mode,
-  theme: 'dracula',
+  theme: initial.theme,
   lineNumbers: true,
   autoCloseTags: true,
   autoCloseBrackets: true,
@@ -412,55 +476,42 @@ const cmOptions = (mode) => ({
   lineWrapping: false,
 });
 
-const htmlEditor = CodeMirror(document.getElementById('html-cm-wrap'), {
-  ...cmOptions('htmlmixed'),
-  value: initial.html,
-});
+const htmlEditor = CodeMirror(document.getElementById('html-cm-wrap'), { ...cmOpts('htmlmixed'), value: initial.html });
+const cssEditor  = CodeMirror(document.getElementById('css-cm-wrap'),  { ...cmOpts('css'),       value: initial.css  });
+const jsEditor   = CodeMirror(document.getElementById('js-cm-wrap'),   { ...cmOpts('javascript'), value: initial.js  });
 
-const cssEditor = CodeMirror(document.getElementById('css-cm-wrap'), {
-  ...cmOptions('css'),
-  value: initial.css,
-});
-
-const jsEditor = CodeMirror(document.getElementById('js-cm-wrap'), {
-  ...cmOptions('javascript'),
-  value: initial.js,
-});
+document.getElementById('theme-select').value = initial.theme;
 
 /* ═══════════════════════════════════════════════════════════
-   4.  RUN / PREVIEW
+   7.  THEME
+═══════════════════════════════════════════════════════════ */
+function setTheme(theme) {
+  [htmlEditor, cssEditor, jsEditor].forEach(ed => ed.setOption('theme', theme));
+  localStorage.setItem('cm-theme', theme);
+  document.getElementById('theme-select').value = theme;
+}
+document.getElementById('theme-select').addEventListener('change', e => setTheme(e.target.value));
+
+/* ═══════════════════════════════════════════════════════════
+   8.  RUN / PREVIEW
 ═══════════════════════════════════════════════════════════ */
 function buildDocument() {
   const html = htmlEditor.getValue();
   const css  = cssEditor.getValue();
   const js   = jsEditor.getValue();
+  const full = /<!doctype/i.test(html) || /<html/i.test(html);
 
-  const isFullDoc = /<!doctype/i.test(html) || /<html/i.test(html);
-
-  if (isFullDoc) {
+  if (full) {
     let doc = html;
-    const styleTag  = `<style>${css}</style>`;
-    const scriptTag = `<script>${js}<\/script>`;
-    doc = /<\/head>/i.test(doc)
-      ? doc.replace(/<\/head>/i, `${styleTag}\n</head>`)
-      : styleTag + '\n' + doc;
-    doc = /<\/body>/i.test(doc)
-      ? doc.replace(/<\/body>/i, `${scriptTag}\n</body>`)
-      : doc + '\n' + scriptTag;
+    const s = `<style>${css}</style>`;
+    const j = `<script>${js}<\/script>`;
+    doc = /<\/head>/i.test(doc) ? doc.replace(/<\/head>/i, `${s}\n</head>`) : s + '\n' + doc;
+    doc = /<\/body>/i.test(doc) ? doc.replace(/<\/body>/i, `${j}\n</body>`) : doc + '\n' + j;
     return doc;
   }
 
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <style>${css}</style>
-</head>
-<body>
-${html}
-<script>${js}<\/script>
-</body>
-</html>`;
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
 }
 
 function runPreview() {
@@ -469,139 +520,133 @@ function runPreview() {
 
 window.addEventListener('load', () => {
   runPreview();
-  setTimeout(() => {
-    htmlEditor.refresh();
-    cssEditor.refresh();
-    jsEditor.refresh();
-  }, 50);
+  setTimeout(() => { htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh(); }, 50);
 });
-
 document.getElementById('btn-run').addEventListener('click', runPreview);
 
 /* ═══════════════════════════════════════════════════════════
-   5.  SHARE
+   9.  SHARE  — tries is.gd first, falls back to LZString URL
 ═══════════════════════════════════════════════════════════ */
-function getShareURL() {
-  const payload = JSON.stringify({
-    html: htmlEditor.getValue(),
-    css:  cssEditor.getValue(),
-    js:   jsEditor.getValue(),
-  });
-  const encoded = btoa(unescape(encodeURIComponent(payload)));
-  const url = new URL(window.location.href);
-  url.search = '';
-  url.searchParams.set('code', encoded);
-  return url.toString();
-}
+const shareBtn = document.getElementById('btn-share');
 
-document.getElementById('btn-share').addEventListener('click', () => {
-  navigator.clipboard.writeText(getShareURL()).then(() => showToast('Link copied! 🎉'));
+shareBtn.addEventListener('click', async () => {
+  const longURL = buildLongURL();
+
+  // Optimistically show loading state
+  shareBtn.textContent = '⏳ Sharing…';
+  shareBtn.classList.add('loading');
+  shareBtn.disabled = true;
+
+  let finalURL = longURL;   // fallback value
+  let usedShortener = false;
+
+  try {
+    finalURL     = await shortenURL(longURL);
+    usedShortener = true;
+  } catch (err) {
+    console.warn('URL shortener failed, using LZString URL:', err);
+  }
+
+  try {
+    await navigator.clipboard.writeText(finalURL);
+    showToast(usedShortener
+      ? `Short link copied! 🎉\n${finalURL}`
+      : 'Link copied! (shortener unavailable) 🎉'
+    );
+  } catch (_) {
+    // Clipboard API blocked (e.g. non-https) — show the URL in the toast so user can copy manually
+    showToast(`Copy this link:\n${finalURL}`, 6000);
+  }
+
+  shareBtn.textContent = '⎘ Share';
+  shareBtn.classList.remove('loading');
+  shareBtn.disabled = false;
 });
 
 /* ═══════════════════════════════════════════════════════════
-   6.  CLEAR
+   10.  CLEAR
 ═══════════════════════════════════════════════════════════ */
 document.getElementById('btn-clear').addEventListener('click', () => {
   if (!confirm('Clear all editors?')) return;
-  htmlEditor.setValue('');
-  cssEditor.setValue('');
-  jsEditor.setValue('');
+  htmlEditor.setValue(''); cssEditor.setValue(''); jsEditor.setValue('');
   runPreview();
 });
 
 /* ═══════════════════════════════════════════════════════════
-   7.  MOBILE TABS
+   11.  MOBILE TABS
 ═══════════════════════════════════════════════════════════ */
 const tabBtns   = document.querySelectorAll('.tab-btn');
-const allPanels = [
-  document.getElementById('html-panel'),
-  document.getElementById('css-panel'),
-  document.getElementById('js-panel'),
-  document.getElementById('preview-panel'),
-];
+const allPanels = ['html-panel','css-panel','js-panel','preview-panel']
+                    .map(id => document.getElementById(id));
 
 tabBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     tabBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    const targetId = btn.dataset.target;
-    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== targetId));
-
-    // Refresh whichever editor just became visible
-    if (targetId === 'html-panel') htmlEditor.refresh();
-    if (targetId === 'css-panel')  cssEditor.refresh();
-    if (targetId === 'js-panel')   jsEditor.refresh();
+    const t = btn.dataset.target;
+    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== t));
+    if (t === 'html-panel') htmlEditor.refresh();
+    if (t === 'css-panel')  cssEditor.refresh();
+    if (t === 'js-panel')   jsEditor.refresh();
   });
 });
 
 /* ═══════════════════════════════════════════════════════════
-   8.  DESKTOP DRAG DIVIDER
+   12.  DRAG DIVIDER
 ═══════════════════════════════════════════════════════════ */
 const divider      = document.getElementById('divider');
 const editorColumn = document.getElementById('editor-column');
 const panelsEl     = document.getElementById('panels');
-let isDragging = false;
+let isDragging     = false;
 
 divider.addEventListener('mousedown', e => {
   isDragging = true;
   divider.classList.add('dragging');
-  document.body.style.cssText += 'cursor:col-resize;user-select:none;';
+  document.body.style.cursor = document.body.style.userSelect = 'none';
   e.preventDefault();
 });
-
 document.addEventListener('mousemove', e => {
   if (!isDragging) return;
   const rect = panelsEl.getBoundingClientRect();
-  let pct = (e.clientX - rect.left) / rect.width * 100;
-  pct = Math.min(Math.max(pct, 20), 80);
+  const pct  = Math.min(Math.max((e.clientX - rect.left) / rect.width * 100, 20), 80);
   editorColumn.style.width = pct + '%';
 });
-
 document.addEventListener('mouseup', () => {
   if (!isDragging) return;
   isDragging = false;
   divider.classList.remove('dragging');
-  document.body.style.cursor = '';
-  document.body.style.userSelect = '';
-  htmlEditor.refresh();
-  cssEditor.refresh();
-  jsEditor.refresh();
+  document.body.style.cursor = document.body.style.userSelect = '';
+  htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh();
 });
 
 /* ═══════════════════════════════════════════════════════════
-   9.  BREAKPOINT WATCHER
+   13.  BREAKPOINT WATCHER
 ═══════════════════════════════════════════════════════════ */
 const desktopMQ = window.matchMedia('(min-width: 768px)');
 
 function onBreakpointChange(e) {
   if (e.matches) {
-    // Desktop: remove all hidden classes so all panels show
     allPanels.forEach(p => p.classList.remove('hidden'));
   } else {
-    // Mobile: only the active tab's panel should show
-    const activeTab = document.querySelector('.tab-btn.active');
-    const targetId  = activeTab?.dataset.target ?? 'html-panel';
-    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== targetId));
+    const t = document.querySelector('.tab-btn.active')?.dataset.target ?? 'html-panel';
+    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== t));
   }
-  setTimeout(() => {
-    htmlEditor.refresh();
-    cssEditor.refresh();
-    jsEditor.refresh();
-  }, 50);
+  setTimeout(() => { htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh(); }, 50);
 }
 
 desktopMQ.addEventListener('change', onBreakpointChange);
 onBreakpointChange(desktopMQ);
 
 /* ═══════════════════════════════════════════════════════════
-   10. TOAST
+   14.  TOAST  (supports multi-line and custom duration)
 ═══════════════════════════════════════════════════════════ */
-function showToast(msg) {
+let toastTimer = null;
+function showToast(msg, duration = 3000) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
 }
 </script>
 </body>
