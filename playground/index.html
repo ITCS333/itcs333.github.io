@@ -1,242 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Playground</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Ace Editor (Core) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
-    <!-- Ace Editor (HTML Mode & Theme) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/mode-html.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/theme-monokai.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Playground</title>
 
-    <style>
-        /* Mobile Tab Active State */
-        .tab-active {
-            border-bottom: 2px solid #3b82f6;
-            color: #3b82f6;
-            font-weight: 600;
-            background-color: #1f2937;
-        }
-        .tab-inactive {
-            color: #9ca3af;
-        }
+  <!-- CodeMirror 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/dracula.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closetag.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closebrackets.min.js"></script>
 
-        /* Fix Ace Editor font for different devices */
-        #editor { 
-            width: 100%;
-            height: 100%;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-    </style>
-</head>
-<body class="h-screen flex flex-col bg-gray-900 text-white overflow-hidden">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!-- Header -->
-    <header class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700 shadow-md z-10 shrink-0">
-        <div class="flex items-center gap-2">
-            <i data-lucide="code-2" class="w-6 h-6 text-blue-400"></i>
-            <h1 class="font-bold text-lg tracking-wide">ITCS333<span class="text-blue-400">Playground</span></h1>
-        </div>
-        <div class="flex gap-2">
-            <button onclick="shareCode()" class="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-700 hover:bg-gray-600 rounded-md transition-colors border border-gray-600">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Share URL</span>
-            </button>
-            <button onclick="resetCode()" class="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-900/30 hover:bg-red-900/50 text-red-200 rounded-md transition-colors border border-red-900/50">
-                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Reset</span>
-            </button>
-        </div>
-    </header>
+    :root {
+      --bg:        #1e1f29;
+      --surface:   #282a36;
+      --border:    #44475a;
+      --accent:    #bd93f9;
+      --accent2:   #50fa7b;
+      --text:      #f8f8f2;
+      --muted:     #6272a4;
+      --tab-h:     42px;
+      --toolbar-h: 52px;
+    }
 
-    <!-- Mobile Tabs -->
-    <div id="mobile-tabs" class="flex border-b border-gray-700 bg-gray-800 shrink-0 md:hidden">
-        <button onclick="switchTab('editor')" id="tab-editor" class="flex-1 py-3 text-center text-sm tab-active transition-colors">
-            Code
-        </button>
-        <button onclick="switchTab('preview')" id="tab-preview" class="flex-1 py-3 text-center text-sm tab-inactive transition-colors">
-            Result
-        </button>
-    </div>
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
 
-    <!-- Main Container -->
-    <!-- 
-       Flex layout logic:
-       - Mobile: flex-col, children are toggled via 'hidden' class.
-       - Desktop (md): flex-row, 'hidden' classes are overridden by 'md:flex' and 'md:block'.
-    -->
-    <div id="pane-container" class="flex-1 relative flex flex-col md:flex-row overflow-hidden">
-        
-        <!-- Editor Pane -->
-        <!-- Initially visible on mobile (flex), always visible on desktop (md:flex) -->
-        <div id="pane-editor" class="pane flex flex-col relative w-full h-full md:w-1/2 md:flex border-r border-gray-700">
-            <!-- Ace Editor Container -->
-            <div id="editor"></div>
-        </div>
+    /* ── Toolbar ──────────────────────────────────────────── */
+    #toolbar {
+      height: var(--toolbar-h);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
 
-        <!-- Preview Pane -->
-        <!-- Initially hidden on mobile (hidden), visible on desktop (md:flex) -->
-        <div id="pane-preview" class="pane hidden flex-col relative w-full h-full md:w-1/2 md:flex bg-white">
-            <iframe id="preview" class="w-full h-full border-none bg-white block"></iframe>
-        </div>
+    #toolbar h1 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex: 1;
+      white-space: nowrap;
+    }
 
-    </div>
+    .toolbar-btn {
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .toolbar-btn:hover { background: var(--muted); }
+    .toolbar-btn.run   { background: var(--accent2); color: #1e1f29; font-weight: 700; }
+    .toolbar-btn.run:hover { filter: brightness(1.1); }
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
-        URL copied to clipboard!
-    </div>
+    /* ── App Layout ───────────────────────────────────────── */
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--toolbar-h));
+    }
 
-    <script>
-        // --- 1. Icons & Default Code ---
-        lucide.createIcons();
+    /* ── Mobile Tab Bar ───────────────────────────────────── */
+    #tab-bar {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
 
-        const defaultCode = `<!DOCTYPE html>
-<html>
-<head>
+    .tab-btn {
+      flex: 1;
+      height: var(--tab-h);
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      letter-spacing: 0.03em;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── Panels Container ─────────────────────────────────── */
+    #panels {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Editor Panel ─────────────────────────────────────── */
+    .editor-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 5px 10px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    /* CodeMirror fills its panel */
+    .CodeMirror {
+      flex: 1;
+      height: 100% !important;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    }
+    .cm-wrap {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .cm-wrap .CodeMirror { height: 100% !important; }
+
+    /* ── Preview Panel ────────────────────────────────────── */
+    #preview-panel {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    #preview-frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+      background: #fff;
+    }
+
+    /* ── Divider (desktop only) ───────────────────────────── */
+    #divider {
+      width: 5px;
+      background: var(--border);
+      cursor: col-resize;
+      flex-shrink: 0;
+      transition: background 0.15s;
+      display: none;
+    }
+    #divider:hover, #divider.dragging { background: var(--accent); }
+
+    /* ── Toast ────────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--accent2);
+      color: #1e1f29;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      pointer-events: none;
+      z-index: 999;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+       ════════════════════════════════════════════════════════ */
+
+    /* ── Mobile (default): stacked tabs ──────────────────── */
+    .editor-panel { width: 100%; height: 100%; }
+
+    /* Only one panel visible at a time */
+    .editor-panel.hidden,
+    #preview-panel.hidden {
+      display: none;
+    }
+
+    /* On mobile, editor sub-tabs (HTML/CSS/JS) are hidden;
+       the top tab bar handles switching */
+    .panel-label { display: none; }
+
+    /* ── Tablet / Desktop (≥ 768px): side by side ─────────── */
+    @media (min-width: 768px) {
+      /* Hide the mobile tab bar */
+      #tab-bar { display: none; }
+
+      /* Restore labels */
+      .panel-label { display: block; }
+
+      /* Stack the three editors vertically on the left */
+      #editor-column {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        flex-shrink: 0;
+        /* width set by JS / default 50% */
+        width: 50%;
+      }
+
+      .editor-panel {
+        flex: 1;
+        width: 100% !important;
+        border-bottom: 1px solid var(--border);
+        /* Override mobile hidden state */
+        display: flex !important;
+      }
+      .editor-panel:last-child { border-bottom: none; }
+
+      #preview-panel {
+        flex: 1;
+        display: flex !important;
+      }
+
+      #divider { display: block; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello ITCS333</h1>
+
+<!-- ── Toolbar ─────────────────────────────────────────────── -->
+<div id="toolbar">
+  <h1>ITCS333 Playground</h1>
+  <button class="toolbar-btn run" id="btn-run">▶ Run</button>
+  <button class="toolbar-btn" id="btn-share">⎘ Share</button>
+  <button class="toolbar-btn" id="btn-clear">✕ Clear</button>
+</div>
+
+<!-- ── App ────────────────────────────────────────────────── -->
+<div id="app">
+
+  <!-- Mobile tab switcher -->
+  <div id="tab-bar">
+    <button class="tab-btn active" data-target="html-panel">HTML</button>
+    <button class="tab-btn"        data-target="css-panel">CSS</button>
+    <button class="tab-btn"        data-target="js-panel">JS</button>
+    <button class="tab-btn"        data-target="preview-panel">Preview</button>
+  </div>
+
+  <!-- Panels -->
+  <div id="panels">
+
+    <!-- Left column: 3 editors -->
+    <div id="editor-column">
+
+      <div class="editor-panel" id="html-panel">
+        <div class="panel-label">HTML</div>
+        <div class="cm-wrap" id="html-cm-wrap"></div>
+      </div>
+
+      <div class="editor-panel hidden" id="css-panel">
+        <div class="panel-label">CSS</div>
+        <div class="cm-wrap" id="css-cm-wrap"></div>
+      </div>
+
+      <div class="editor-panel hidden" id="js-panel">
+        <div class="panel-label">JS</div>
+        <div class="cm-wrap" id="js-cm-wrap"></div>
+      </div>
+
+    </div><!-- /editor-column -->
+
+    <!-- Drag divider -->
+    <div id="divider"></div>
+
+    <!-- Right: Preview -->
+    <div id="preview-panel" class="hidden">
+      <div class="panel-label">Preview</div>
+      <iframe id="preview-frame" sandbox="allow-scripts allow-modals"></iframe>
+    </div>
+
+  </div><!-- /panels -->
+</div><!-- /app -->
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   1.  DEFAULTS
+═══════════════════════════════════════════════════════════ */
+const DEFAULT = {
+  html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Page</title>
+</head>
+<body>
+  <h1>Hello, World!</h1>
+  <p>Edit the code on the left and click <strong>Run</strong>.</p>
+</body>
+</html>`,
+  css: `/* Your CSS here */
+body {
+  font-family: system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background: #f0f4ff;
+  color: #1a1a2e;
+}
+
+h1 {
+  color: #6c63ff;
+}`,
+  js: `// Your JavaScript here
+console.log('Hello from the editor!');`
+};
+
+/* ═══════════════════════════════════════════════════════════
+   2.  URL PRELOAD  (Base64-encoded JSON)
+═══════════════════════════════════════════════════════════ */
+function loadFromURL() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('code');
+    if (!encoded) return null;
+    const json = atob(encoded);
+    return JSON.parse(json);
+  } catch (e) {
+    console.warn('Could not parse ?code= param', e);
+    return null;
+  }
+}
+
+const preloaded = loadFromURL();
+const initial = {
+  html: preloaded?.html ?? DEFAULT.html,
+  css:  preloaded?.css  ?? DEFAULT.css,
+  js:   preloaded?.js   ?? DEFAULT.js,
+};
+
+/* ═══════════════════════════════════════════════════════════
+   3.  CODEMIRROR INSTANCES
+═══════════════════════════════════════════════════════════ */
+const cmOptions = (mode) => ({
+  mode,
+  theme: 'dracula',
+  lineNumbers: true,
+  autoCloseTags: true,
+  autoCloseBrackets: true,
+  indentUnit: 2,
+  tabSize: 2,
+  indentWithTabs: false,
+  lineWrapping: false,
+});
+
+const htmlEditor = CodeMirror(document.getElementById('html-cm-wrap'), {
+  ...cmOptions('htmlmixed'),
+  value: initial.html,
+});
+
+const cssEditor = CodeMirror(document.getElementById('css-cm-wrap'), {
+  ...cmOptions('css'),
+  value: initial.css,
+});
+
+const jsEditor = CodeMirror(document.getElementById('js-cm-wrap'), {
+  ...cmOptions('javascript'),
+  value: initial.js,
+});
+
+/* ═══════════════════════════════════════════════════════════
+   4.  RUN / PREVIEW
+═══════════════════════════════════════════════════════════ */
+function buildDocument() {
+  const html = htmlEditor.getValue();
+  const css  = cssEditor.getValue();
+  const js   = jsEditor.getValue();
+
+  // If user wrote a full HTML doc, inject CSS/JS into it.
+  // Otherwise wrap everything.
+  const isFullDoc = /<!doctype/i.test(html) || /<html/i.test(html);
+
+  if (isFullDoc) {
+    let doc = html;
+    // inject <style> before </head> or at top
+    const styleTag = `<style>${css}</style>`;
+    const scriptTag = `<script>${js}<\/script>`;
+    if (/<\/head>/i.test(doc)) {
+      doc = doc.replace(/<\/head>/i, `${styleTag}\n</head>`);
+    } else {
+      doc = styleTag + '\n' + doc;
+    }
+    if (/<\/body>/i.test(doc)) {
+      doc = doc.replace(/<\/body>/i, `${scriptTag}\n</body>`);
+    } else {
+      doc = doc + '\n' + scriptTag;
+    }
+    return doc;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>${css}</style>
+</head>
+<body>
+${html}
+<script>${js}<\/script>
 </body>
 </html>`;
+}
 
-        // --- 2. Ace Editor Setup ---
-        const editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/html");
-        editor.setShowPrintMargin(false);
-        editor.setOptions({
-            fontSize: "14px",
-            wrap: true,
-            tabSize: 2,
-            useWorker: false 
-        });
+function runPreview() {
+  const frame = document.getElementById('preview-frame');
+  const doc = buildDocument();
+  // Use srcdoc for sandboxed, no-backend preview
+  frame.srcdoc = doc;
+}
 
-        // --- 3. Preview Logic with Debounce ---
-        let timeout = null;
-        
-        function updatePreview() {
-            const code = editor.getValue();
-            const previewFrame = document.getElementById('preview');
-            const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-            
-            doc.open();
-            doc.write(code);
-            doc.close();
-        }
+// Auto-run on load
+window.addEventListener('load', () => {
+  runPreview();
+  // Let CodeMirror measure itself correctly
+  setTimeout(() => {
+    htmlEditor.refresh();
+    cssEditor.refresh();
+    jsEditor.refresh();
+  }, 50);
+});
 
-        editor.session.on('change', function(delta) {
-            clearTimeout(timeout);
-            timeout = setTimeout(updatePreview, 500);
-        });
+document.getElementById('btn-run').addEventListener('click', runPreview);
 
-        // --- 4. URL State & Sharing ---
-        function utf8_to_b64(str) {
-            return window.btoa(unescape(encodeURIComponent(str)));
-        }
+/* ═══════════════════════════════════════════════════════════
+   5.  SHARE  (copies URL with encoded state)
+═══════════════════════════════════════════════════════════ */
+function getShareURL() {
+  const payload = JSON.stringify({
+    html: htmlEditor.getValue(),
+    css:  cssEditor.getValue(),
+    js:   jsEditor.getValue(),
+  });
+  const encoded = btoa(unescape(encodeURIComponent(payload))); // UTF-8 safe
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('code', encoded);
+  return url.toString();
+}
 
-        function b64_to_utf8(str) {
-            return decodeURIComponent(escape(window.atob(str)));
-        }
+document.getElementById('btn-share').addEventListener('click', () => {
+  const url = getShareURL();
+  navigator.clipboard.writeText(url).then(() => showToast('Link copied! 🎉'));
+});
 
-        function loadFromUrl() {
-            const params = new URLSearchParams(window.location.search);
-            const encodedCode = params.get('code');
-            
-            if (encodedCode) {
-                try {
-                    const decoded = b64_to_utf8(encodedCode);
-                    editor.setValue(decoded, -1);
-                } catch (e) {
-                    console.error("Decoding error", e);
-                    editor.setValue(defaultCode, -1);
-                }
-            } else {
-                editor.setValue(defaultCode, -1);
-            }
-            updatePreview();
-        }
+/* ═══════════════════════════════════════════════════════════
+   6.  CLEAR
+═══════════════════════════════════════════════════════════ */
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (!confirm('Clear all editors?')) return;
+  htmlEditor.setValue('');
+  cssEditor.setValue('');
+  jsEditor.setValue('');
+  runPreview();
+});
 
-        function shareCode() {
-            const code = editor.getValue();
-            const encoded = utf8_to_b64(code);
-            const url = new URL(window.location);
-            url.searchParams.set('code', encoded);
-            window.history.pushState({}, '', url);
-            navigator.clipboard.writeText(url.toString()).then(() => {
-                showToast("Link copied to clipboard!");
-            }).catch(err => {
-                showToast("URL updated in address bar");
-            });
-        }
+/* ═══════════════════════════════════════════════════════════
+   7.  MOBILE TABS
+═══════════════════════════════════════════════════════════ */
+const tabBtns = document.querySelectorAll('.tab-btn');
+const allPanels = [
+  document.getElementById('html-panel'),
+  document.getElementById('css-panel'),
+  document.getElementById('js-panel'),
+  document.getElementById('preview-panel'),
+];
 
-        function resetCode() {
-            if(confirm("Are you sure? This will lose current changes.")) {
-                editor.setValue(defaultCode, -1);
-                const url = new URL(window.location);
-                url.searchParams.delete('code');
-                window.history.pushState({}, '', url);
-            }
-        }
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 
-        // --- 5. UI Helpers ---
+    const targetId = btn.dataset.target;
+    allPanels.forEach(p => {
+      p.classList.toggle('hidden', p.id !== targetId);
+    });
 
-        function switchTab(tab) {
-            const paneEditor = document.getElementById('pane-editor');
-            const panePreview = document.getElementById('pane-preview');
-            const tabEditor = document.getElementById('tab-editor');
-            const tabPreview = document.getElementById('tab-preview');
+    // Refresh editors after becoming visible
+    if (targetId === 'html-panel') htmlEditor.refresh();
+    if (targetId === 'css-panel')  cssEditor.refresh();
+    if (targetId === 'js-panel')   jsEditor.refresh();
+  });
+});
 
-            if (tab === 'editor') {
-                // Show Editor, Hide Preview
-                paneEditor.classList.remove('hidden');
-                paneEditor.classList.add('flex');
-                
-                panePreview.classList.add('hidden');
-                panePreview.classList.remove('flex');
-                
-                // Tab Styles
-                tabEditor.classList.add('tab-active');
-                tabEditor.classList.remove('tab-inactive');
-                tabPreview.classList.remove('tab-active');
-                tabPreview.classList.add('tab-inactive');
-                
-                // Refresh Ace Editor layout
-                editor.resize();
-            } else {
-                // Hide Editor, Show Preview
-                paneEditor.classList.add('hidden');
-                paneEditor.classList.remove('flex');
-                
-                panePreview.classList.remove('hidden');
-                panePreview.classList.add('flex');
-                
-                // Tab Styles
-                tabPreview.classList.add('tab-active');
-                tabPreview.classList.remove('tab-inactive');
-                tabEditor.classList.remove('tab-active');
-                tabEditor.classList.add('tab-inactive');
-            }
-        }
+/* ═══════════════════════════════════════════════════════════
+   8.  DESKTOP DRAG DIVIDER
+═══════════════════════════════════════════════════════════ */
+const divider      = document.getElementById('divider');
+const editorColumn = document.getElementById('editor-column');
+const panelsEl     = document.getElementById('panels');
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
+let isDragging = false;
 
-        // --- 6. Start ---
-        window.onload = loadFromUrl;
+divider.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  divider.classList.add('dragging');
+  document.body.style.cursor = 'col-resize';
+  document.body.style.userSelect = 'none';
+  e.preventDefault();
+});
 
-    </script>
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  const rect = panelsEl.getBoundingClientRect();
+  let pct = (e.clientX - rect.left) / rect.width * 100;
+  pct = Math.min(Math.max(pct, 20), 80); // clamp 20%–80%
+  editorColumn.style.width = pct + '%';
+});
+
+document.addEventListener('mouseup', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  divider.classList.remove('dragging');
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
+  htmlEditor.refresh();
+  cssEditor.refresh();
+  jsEditor.refresh();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   9.  RESPONSIVE: detect breakpoint changes
+═══════════════════════════════════════════════════════════ */
+const desktopMQ = window.matchMedia('(min-width: 768px)');
+
+function onBreakpointChange(e) {
+  if (e.matches) {
+    // Switched to desktop — ensure all panels visible
+    allPanels.forEach(p => p.classList.remove('hidden'));
+    // Re-show preview panel (it might be hidden from mobile state)
+    document.getElementById('preview-panel').classList.remove('hidden');
+  } else {
+    // Switched to mobile — show only the active tab's panel
+    const activeTab = document.querySelector('.tab-btn.active');
+    const targetId = activeTab?.dataset.target ?? 'html-panel';
+    allPanels.forEach(p => {
+      p.classList.toggle('hidden', p.id !== targetId);
+    });
+  }
+  // Refresh editors after layout shift
+  setTimeout(() => {
+    htmlEditor.refresh();
+    cssEditor.refresh();
+    jsEditor.refresh();
+  }, 50);
+}
+
+desktopMQ.addEventListener('change', onBreakpointChange);
+// Run once on load to set initial state
+onBreakpointChange(desktopMQ);
+
+/* ═══════════════════════════════════════════════════════════
+   10. TOAST HELPER
+═══════════════════════════════════════════════════════════ */
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+</script>
 </body>
 </html>
