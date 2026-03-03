@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Code Editor</title>
+  <title>ITCS333 Code Editor</title>
 
   <!-- CodeMirror 5 core -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css" />
@@ -31,7 +31,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 
   <style>
-    /* ── Reset ────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -47,18 +46,9 @@
       --toolbar-h: 52px;
     }
 
-    /* ── Root layout ──────────────────────────────────────────
-       body is the full-height flex column.
-       This is the KEY fix: toolbar is a natural flex child,
-       not positioned relative to a calc() height.
-       100dvh accounts for mobile browser chrome (address bar).
-    ─────────────────────────────────────────────────────────── */
-    html {
-      height: 100%;
-    }
+    html { height: 100%; }
 
     body {
-      /* dvh fallback chain: dvh respects mobile browser chrome */
       height: 100vh;
       height: 100dvh;
       display: flex;
@@ -66,15 +56,12 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      /* NO overflow:hidden here — that's what hid the toolbar */
       overflow: hidden;
-      /* Prevent body itself from being wider than the viewport */
       max-width: 100vw;
     }
 
     /* ── Toolbar ──────────────────────────────────────────── */
     #toolbar {
-      /* Fixed height, never shrinks, never grows */
       height: var(--toolbar-h);
       min-height: var(--toolbar-h);
       flex-shrink: 0;
@@ -82,10 +69,8 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      /* Horizontal padding only — vertical is handled by height */
       padding: 0 12px;
       gap: 8px;
-      /* Critical: stop toolbar children from pushing it wider */
       overflow: hidden;
       min-width: 0;
       width: 100%;
@@ -95,7 +80,6 @@
       font-size: 1rem;
       font-weight: 700;
       color: var(--accent);
-      /* Takes leftover space but can shrink and truncate */
       flex: 1 1 auto;
       min-width: 0;
       white-space: nowrap;
@@ -103,7 +87,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Buttons shrink but don't disappear on small screens */
     .toolbar-btn {
       flex-shrink: 0;
       background: var(--border);
@@ -116,12 +99,11 @@
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .toolbar-btn:hover   { background: var(--muted); }
-    .toolbar-btn.run     { background: var(--accent2); color: #1e1f29; font-weight: 700; }
+    .toolbar-btn:hover    { background: var(--muted); }
+    .toolbar-btn.run      { background: var(--accent2); color: #1e1f29; font-weight: 700; }
     .toolbar-btn.run:hover { filter: brightness(1.1); }
-    .toolbar-btn.loading { opacity: 0.6; cursor: wait; }
+    .toolbar-btn.loading  { opacity: 0.6; cursor: wait; }
 
-    /* Theme select — also flex-shrink: 0 */
     #theme-select {
       flex-shrink: 0;
       background: var(--border);
@@ -132,7 +114,6 @@
       font-size: 0.82rem;
       cursor: pointer;
       outline: none;
-      /* Cap its width so it doesn't blow out the toolbar */
       max-width: 130px;
     }
     #theme-select:focus { outline: 2px solid var(--accent); }
@@ -144,24 +125,22 @@
       white-space: nowrap;
     }
 
-    /* ── App (everything below toolbar) ──────────────────── */
+    /* ── App ──────────────────────────────────────────────── */
     #app {
-      /* Takes all remaining vertical space after the toolbar */
       flex: 1 1 auto;
-      min-height: 0;       /* crucial: lets flex child shrink below content size */
+      min-height: 0;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* ── Mobile Tab Bar ───────────────────────────────────── */
+    /* ── Tab bar ──────────────────────────────────────────── */
     #tab-bar {
       flex-shrink: 0;
       display: flex;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       width: 100%;
-      overflow: hidden;
     }
 
     .tab-btn {
@@ -174,15 +153,18 @@
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
       letter-spacing: 0.03em;
-      /* Prevent individual tab from overflowing */
-      overflow: hidden;
       white-space: nowrap;
+      overflow: hidden;
       text-overflow: ellipsis;
     }
-    .tab-btn:hover  { color: var(--text); }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn:hover  { color: var(--text); background: rgba(255,255,255,0.04); }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(189,147,249,0.08);
+    }
 
     /* ── Panels container ─────────────────────────────────── */
     #panels {
@@ -193,7 +175,19 @@
       position: relative;
     }
 
-    /* ── Panel label (desktop only) ───────────────────────── */
+    /* ── Drag divider ─────────────────────────────────────── */
+    #divider {
+      width: 5px;
+      background: var(--border);
+      cursor: col-resize;
+      flex-shrink: 0;
+      transition: background 0.15s;
+      display: none; /* shown only on desktop via media query */
+    }
+    #divider:hover,
+    #divider.dragging { background: var(--accent); }
+
+    /* ── Panel label ──────────────────────────────────────── */
     .panel-label {
       flex-shrink: 0;
       font-size: 0.72rem;
@@ -204,16 +198,15 @@
       padding: 5px 10px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      display: none;
     }
 
     /* ── CodeMirror wrapper ───────────────────────────────── */
     .cm-wrap {
       flex: 1;
+      min-height: 0;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 0;
     }
     .cm-wrap .CodeMirror {
       flex: 1;
@@ -241,20 +234,9 @@
       flex: 1;
       border: none;
       width: 100%;
+      min-height: 0;
       background: #fff;
     }
-
-    /* ── Drag divider ─────────────────────────────────────── */
-    #divider {
-      width: 5px;
-      background: var(--border);
-      cursor: col-resize;
-      flex-shrink: 0;
-      transition: background 0.15s;
-      display: none;
-    }
-    #divider:hover,
-    #divider.dragging { background: var(--accent); }
 
     /* ── Toast ────────────────────────────────────────────── */
     #toast {
@@ -273,21 +255,17 @@
       pointer-events: none;
       z-index: 999;
       text-align: center;
-      /* Don't let toast be wider than screen */
       max-width: calc(100vw - 32px);
       white-space: pre-line;
     }
-    #toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+    #toast.show  { transform: translateX(-50%) translateY(0); opacity: 1; }
     #toast.error { background: var(--accent3); }
 
-    /* ════════════════════════════════════════════════════════
-       MOBILE  (default)
-       Each panel is absolutely positioned to fill #panels.
-       Only the active one is shown via .hidden.
-    ════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════
+       MOBILE (default — < 768px)
+       All panels are absolutely positioned to fill #panels.
+       Only the active tab's panel is visible.
+    ══════════════════════════════════════════════════════ */
     #editor-column { display: contents; }
 
     .editor-panel,
@@ -301,49 +279,58 @@
     .editor-panel.hidden,
     #preview-panel.hidden { display: none; }
 
-    /* ════════════════════════════════════════════════════════
-       TABLET / DESKTOP  (≥ 768px)
-    ════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════
+       DESKTOP (≥ 768px)
+       Left column: tabbed editor panes (HTML/CSS/JS tabs).
+       Right column: always-visible preview split.
+       Preview tab button is hidden on desktop.
+    ══════════════════════════════════════════════════════ */
     @media (min-width: 768px) {
-      #tab-bar     { display: none; }
-      .panel-label { display: block; }
 
+      /* Hide the "Preview" tab button — preview is always visible */
+      .tab-btn[data-target="preview-panel"] { display: none; }
+
+      /* Left editor column: fixed 50% width, flex column */
       #editor-column {
         display: flex;
         flex-direction: column;
         flex-shrink: 0;
         width: 50%;
+        min-height: 0;
         overflow: hidden;
+        position: relative; /* establishes stacking context for abs children */
       }
 
-      .editor-panel,
+      /* All three editor panels stack inside the column.
+         They're absolutely positioned so each fills the full
+         column height — only the active one is shown. */
+      .editor-panel {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: flex !important; /* override .hidden's display:none below */
+      }
+      .editor-panel.hidden { display: none !important; }
+
+      /* Preview panel: right-hand split, static in the flex row */
       #preview-panel {
         position: static;
-        width: auto;
-        height: auto;
         inset: auto;
-      }
-
-      .editor-panel {
-        flex: 1;
-        min-height: 0;
-        border-bottom: 1px solid var(--border);
-        display: flex !important;
-      }
-      .editor-panel:last-child { border-bottom: none; }
-
-      #preview-panel {
         flex: 1;
         min-width: 0;
+        height: auto;
         display: flex !important;
       }
 
-      #divider     { display: block; }
+      /* Drag divider visible on desktop */
+      #divider { display: block; }
+
+      /* Theme label visible on desktop */
       .theme-label { display: inline; }
     }
 
-    /* Hide "Theme:" label text on small screens to save space */
-    @media (max-width: 600px) {
+    @media (max-width: 480px) {
       .theme-label { display: none; }
     }
   </style>
@@ -352,7 +339,7 @@
 
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
 <div id="toolbar">
-  <h1>⚡ Live Editor</h1>
+  <h1>🌐 ITCS333 Editor</h1>
   <button class="toolbar-btn run" id="btn-run">▶ Run</button>
   <button class="toolbar-btn" id="btn-share">⎘ Share</button>
   <button class="toolbar-btn" id="btn-clear">✕ Clear</button>
@@ -382,10 +369,13 @@
     <button class="tab-btn active" data-target="html-panel">HTML</button>
     <button class="tab-btn"        data-target="css-panel">CSS</button>
     <button class="tab-btn"        data-target="js-panel">JS</button>
+    <!-- Hidden on desktop via CSS; visible on mobile -->
     <button class="tab-btn"        data-target="preview-panel">Preview</button>
   </div>
 
   <div id="panels">
+
+    <!-- Left: tabbed editor column -->
     <div id="editor-column">
       <div class="editor-panel" id="html-panel">
         <div class="panel-label">HTML</div>
@@ -401,12 +391,15 @@
       </div>
     </div>
 
+    <!-- Drag divider (desktop only) -->
     <div id="divider"></div>
 
+    <!-- Right: preview (always visible on desktop, tab on mobile) -->
     <div id="preview-panel" class="hidden">
       <div class="panel-label">Preview</div>
       <iframe id="preview-frame" sandbox="allow-scripts allow-modals"></iframe>
     </div>
+
   </div>
 </div>
 
@@ -450,15 +443,12 @@ h1 { color: #6c63ff; }`,
 function encodeState(obj) {
   return LZString.compressToEncodedURIComponent(JSON.stringify(obj));
 }
-
 function decodeState(encoded) {
   try {
     const json = LZString.decompressFromEncodedURIComponent(encoded);
     if (json) return JSON.parse(json);
   } catch (_) {}
-  try {
-    return JSON.parse(decodeURIComponent(escape(atob(encoded))));
-  } catch (_) {}
+  try { return JSON.parse(decodeURIComponent(escape(atob(encoded)))); } catch (_) {}
   return null;
 }
 
@@ -479,10 +469,10 @@ function buildLongURL() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   4.  URL SHORTENER  (is.gd — CORS-friendly, no key needed)
+   4.  URL SHORTENER
 ═══════════════════════════════════════════════════════════ */
 async function shortenURL(longURL) {
-  const res  = await fetch(
+  const res = await fetch(
     `https://is.gd/create.php?format=json&url=${encodeURIComponent(longURL)}`
   );
   if (!res.ok) throw new Error(`is.gd ${res.status}`);
@@ -498,10 +488,7 @@ function loadFromURL() {
   try {
     const encoded = new URLSearchParams(window.location.search).get('code');
     return encoded ? decodeState(encoded) : null;
-  } catch (e) {
-    console.warn('Could not parse ?code= param', e);
-    return null;
-  }
+  } catch (e) { return null; }
 }
 
 const preloaded    = loadFromURL();
@@ -530,9 +517,9 @@ const cmOpts = (mode) => ({
   lineWrapping: false,
 });
 
-const htmlEditor = CodeMirror(document.getElementById('html-cm-wrap'), { ...cmOpts('htmlmixed'), value: initial.html });
-const cssEditor  = CodeMirror(document.getElementById('css-cm-wrap'),  { ...cmOpts('css'),       value: initial.css  });
-const jsEditor   = CodeMirror(document.getElementById('js-cm-wrap'),   { ...cmOpts('javascript'), value: initial.js  });
+const htmlEditor = CodeMirror(document.getElementById('html-cm-wrap'), { ...cmOpts('htmlmixed'),  value: initial.html });
+const cssEditor  = CodeMirror(document.getElementById('css-cm-wrap'),  { ...cmOpts('css'),        value: initial.css  });
+const jsEditor   = CodeMirror(document.getElementById('js-cm-wrap'),   { ...cmOpts('javascript'), value: initial.js   });
 
 document.getElementById('theme-select').value = initial.theme;
 
@@ -544,7 +531,8 @@ function setTheme(theme) {
   localStorage.setItem('cm-theme', theme);
   document.getElementById('theme-select').value = theme;
 }
-document.getElementById('theme-select').addEventListener('change', e => setTheme(e.target.value));
+document.getElementById('theme-select')
+  .addEventListener('change', e => setTheme(e.target.value));
 
 /* ═══════════════════════════════════════════════════════════
    8.  RUN / PREVIEW
@@ -563,7 +551,6 @@ function buildDocument() {
     doc = /<\/body>/i.test(doc) ? doc.replace(/<\/body>/i, `${j}\n</body>`) : doc + '\n' + j;
     return doc;
   }
-
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
 <style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
 }
@@ -574,7 +561,11 @@ function runPreview() {
 
 window.addEventListener('load', () => {
   runPreview();
-  setTimeout(() => { htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh(); }, 50);
+  setTimeout(() => {
+    htmlEditor.refresh();
+    cssEditor.refresh();
+    jsEditor.refresh();
+  }, 50);
 });
 document.getElementById('btn-run').addEventListener('click', runPreview);
 
@@ -589,22 +580,18 @@ shareBtn.addEventListener('click', async () => {
   shareBtn.classList.add('loading');
   shareBtn.disabled = true;
 
-  let finalURL      = longURL;
-  let usedShortener = false;
-
+  let finalURL = longURL, usedShortener = false;
   try {
-    finalURL      = await shortenURL(longURL);
+    finalURL = await shortenURL(longURL);
     usedShortener = true;
-  } catch (err) {
-    console.warn('Shortener failed, using LZString URL:', err);
-  }
+  } catch (err) { console.warn('Shortener failed:', err); }
 
   try {
     await navigator.clipboard.writeText(finalURL);
-    showToast(usedShortener ? `Short link copied! 🎉\n${finalURL}` : 'Link copied! (shortener unavailable) 🎉');
-  } catch (_) {
-    showToast(`Copy this link:\n${finalURL}`, 6000);
-  }
+    showToast(usedShortener
+      ? `Short link copied! 🎉\n${finalURL}`
+      : 'Link copied! (shortener unavailable) 🎉');
+  } catch (_) { showToast(`Copy this link:\n${finalURL}`, 6000); }
 
   shareBtn.textContent = '⎘ Share';
   shareBtn.classList.remove('loading');
@@ -616,31 +603,100 @@ shareBtn.addEventListener('click', async () => {
 ═══════════════════════════════════════════════════════════ */
 document.getElementById('btn-clear').addEventListener('click', () => {
   if (!confirm('Clear all editors?')) return;
-  htmlEditor.setValue(''); cssEditor.setValue(''); jsEditor.setValue('');
+  htmlEditor.setValue('');
+  cssEditor.setValue('');
+  jsEditor.setValue('');
   runPreview();
 });
 
 /* ═══════════════════════════════════════════════════════════
-   11.  MOBILE TABS
+   11.  TABS
+   On mobile: all 4 tabs work, panels are abs-positioned.
+   On desktop: only HTML/CSS/JS tabs are shown; clicking them
+   swaps which editor-panel is visible inside the left column.
+   The preview panel is always shown on desktop regardless.
 ═══════════════════════════════════════════════════════════ */
-const tabBtns   = document.querySelectorAll('.tab-btn');
-const allPanels = ['html-panel','css-panel','js-panel','preview-panel']
-                    .map(id => document.getElementById(id));
+const tabBtns      = document.querySelectorAll('.tab-btn');
+const editorPanels = ['html-panel', 'css-panel', 'js-panel']
+                       .map(id => document.getElementById(id));
+const previewPanel = document.getElementById('preview-panel');
 
-tabBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    tabBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.target;
-    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== t));
-    if (t === 'html-panel') htmlEditor.refresh();
-    if (t === 'css-panel')  cssEditor.refresh();
-    if (t === 'js-panel')   jsEditor.refresh();
-  });
-});
+const editorMap = {
+  'html-panel': htmlEditor,
+  'css-panel':  cssEditor,
+  'js-panel':   jsEditor,
+};
+
+const desktopMQ = window.matchMedia('(min-width: 768px)');
+
+function switchTab(targetId) {
+  const isDesktop = desktopMQ.matches;
+
+  // Update active tab button highlight
+  tabBtns.forEach(b =>
+    b.classList.toggle('active', b.dataset.target === targetId)
+  );
+
+  if (isDesktop) {
+    // Desktop: toggle editor panels inside the left column.
+    // Preview is always visible — never touched here.
+    editorPanels.forEach(p =>
+      p.classList.toggle('hidden', p.id !== targetId)
+    );
+  } else {
+    // Mobile: all panels (including preview) compete for the same slot.
+    [...editorPanels, previewPanel].forEach(p =>
+      p.classList.toggle('hidden', p.id !== targetId)
+    );
+  }
+
+  const ed = editorMap[targetId];
+  if (ed) setTimeout(() => ed.refresh(), 0);
+}
+
+tabBtns.forEach(btn =>
+  btn.addEventListener('click', () => switchTab(btn.dataset.target))
+);
 
 /* ═══════════════════════════════════════════════════════════
-   12.  DRAG DIVIDER
+   12.  BREAKPOINT WATCHER
+   When crossing the 768px boundary, fix up panel visibility
+   so nothing is left in a broken hidden/shown state.
+═══════════════════════════════════════════════════════════ */
+function onBreakpointChange(e) {
+  const activeTarget = document.querySelector('.tab-btn.active')?.dataset.target
+                       ?? 'html-panel';
+
+  if (e.matches) {
+    // Switched to desktop:
+    // - Show the currently active editor panel, hide others.
+    // - Always show preview.
+    editorPanels.forEach(p =>
+      p.classList.toggle('hidden', p.id !== activeTarget)
+    );
+    previewPanel.classList.remove('hidden');
+  } else {
+    // Switched to mobile: only the active tab's panel is visible.
+    [...editorPanels, previewPanel].forEach(p =>
+      p.classList.toggle('hidden', p.id !== activeTarget)
+    );
+    // If the active tab was "preview-panel" on mobile that's fine;
+    // if not, make sure preview is hidden on mobile by default.
+  }
+
+  setTimeout(() => {
+    htmlEditor.refresh();
+    cssEditor.refresh();
+    jsEditor.refresh();
+  }, 50);
+}
+
+desktopMQ.addEventListener('change', onBreakpointChange);
+// Run once on load to set up the correct initial state.
+onBreakpointChange(desktopMQ);
+
+/* ═══════════════════════════════════════════════════════════
+   13.  DRAG DIVIDER  (desktop only)
 ═══════════════════════════════════════════════════════════ */
 const divider      = document.getElementById('divider');
 const editorColumn = document.getElementById('editor-column');
@@ -657,7 +713,8 @@ divider.addEventListener('mousedown', e => {
 document.addEventListener('mousemove', e => {
   if (!isDragging) return;
   const rect = panelsEl.getBoundingClientRect();
-  const pct  = Math.min(Math.max((e.clientX - rect.left) / rect.width * 100, 20), 80);
+  const pct  = Math.min(Math.max(
+    (e.clientX - rect.left) / rect.width * 100, 20), 80);
   editorColumn.style.width = pct + '%';
 });
 document.addEventListener('mouseup', () => {
@@ -665,26 +722,10 @@ document.addEventListener('mouseup', () => {
   isDragging = false;
   divider.classList.remove('dragging');
   document.body.style.cursor = document.body.style.userSelect = '';
-  htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh();
+  htmlEditor.refresh();
+  cssEditor.refresh();
+  jsEditor.refresh();
 });
-
-/* ═══════════════════════════════════════════════════════════
-   13.  BREAKPOINT WATCHER
-═══════════════════════════════════════════════════════════ */
-const desktopMQ = window.matchMedia('(min-width: 768px)');
-
-function onBreakpointChange(e) {
-  if (e.matches) {
-    allPanels.forEach(p => p.classList.remove('hidden'));
-  } else {
-    const t = document.querySelector('.tab-btn.active')?.dataset.target ?? 'html-panel';
-    allPanels.forEach(p => p.classList.toggle('hidden', p.id !== t));
-  }
-  setTimeout(() => { htmlEditor.refresh(); cssEditor.refresh(); jsEditor.refresh(); }, 50);
-}
-
-desktopMQ.addEventListener('change', onBreakpointChange);
-onBreakpointChange(desktopMQ);
 
 /* ═══════════════════════════════════════════════════════════
    14.  TOAST
