@@ -66,6 +66,26 @@
         "title": "Examples",
         "content": "CSS Layout Examples",
         "url": "https://itcs333.github.io/examples/ch7/"
+      },
+      {
+        "title": "Reference",
+        "content": "Pico CSS",
+        "url": "https://picocss.com/"
+      }
+    ]
+  },
+  {
+    "title": "Week 4 (MAR 01)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN JavaScript Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+      },
+      {
+        "title": "Examples",
+        "content": "JavaScript Examples",
+        "url": "https://itcs333.github.io/examples/ch8/"
       }
     ]
   }
