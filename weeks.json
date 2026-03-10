@@ -88,5 +88,25 @@
         "url": "https://itcs333.github.io/examples/ch8/"
       }
     ]
+  },
+  {
+    "title": "Week 5 (MAR 08)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN DOM Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Events Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Events"
+      },
+      {
+        "title": "Examples",
+        "content": "DOM and Events Examples",
+        "url": "https://itcs333.github.io/examples/ch9/"
+      }
+    ]
   }
 ]
