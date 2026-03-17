@@ -108,5 +108,20 @@
         "url": "https://itcs333.github.io/examples/ch9/"
       }
     ]
+  },
+  {
+    "title": "Week 6 (MAR 15)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Array Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"
+      },
+      {
+        "title": "Examples",
+        "content": "Array Functions Examples",
+        "url": "https://itcs333.github.io/examples/ch10/array-functions.html"
+      }
+    ]
   }
 ]
