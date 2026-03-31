@@ -1,0 +1,9 @@
+CREATE TABLE resource_comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    resource_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (resource_id) REFERENCES resources(id),
+    FOREIGN KEY (user_id) REFERENCES students(id)
+);
