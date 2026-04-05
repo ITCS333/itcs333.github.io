@@ -133,5 +133,35 @@
         "url": "https://github.com/ITCS333/examples/tree/main/ch10"
       }
     ]
+  },
+  {
+    "title": "Week 8 (MAR 29)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Local Storage Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Session Storage Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage"
+      }
+    ]
+  },
+  {
+    "title": "Week 9 (APR 05)",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Fetch API Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
+      },
+      {
+        "title": "Examples",
+        "content": "Fetch API Examples",
+        "url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
+      }
+    ]
   }
 ]
