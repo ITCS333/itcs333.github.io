@@ -1,0 +1,40 @@
+<?php
+include '../includes/functions.php';
+include '../includes/db.php';
+
+if(!isLoggedIn()){
+    header('Location: ../login.php');
+    exit();
+}
+?>
+<?php
+$id = $_GET['id'];
+$stmt = $pdo->prepare("SELECT * FROM resources WHERE id=?");
+$stmt->execute([$id]);
+$resource = $stmt->fetch();
+
+echo "<h2>{$resource['title']}</h2>";
+echo "<p>{$resource['description']}</p>";
+
+
+$stmt2 = $pdo->prepare("SELECT rc.comment, s.name FROM resource_comments rc JOIN students s ON rc.user_id=s.id WHERE resource_id=? ORDER BY rc.created_at DESC");
+$stmt2->execute([$id]);
+$comments = $stmt2->fetchAll();
+
+foreach($comments as $c){
+    echo "<p><b>{$c['name']}:</b> {$c['comment']}</p>";
+}
+
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $comment = $_POST['comment'];
+    $stmt3 = $pdo->prepare("INSERT INTO resource_comments (resource_id,user_id,comment) VALUES (?,?,?)");
+    $stmt3->execute([$id, $_SESSION['user_id'], $comment]);
+}
+?>
+
+<form method="POST">
+    <textarea name="comment" required></textarea>
+    <button type="submit">Add Comment</button>
+</form>
+
