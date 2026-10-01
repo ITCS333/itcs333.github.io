@@ -877,6 +877,9 @@ consoleResizer.addEventListener('pointerdown', e => {
   consoleDragging = true;
   document.body.style.cursor = 'row-resize';
   document.body.style.userSelect = 'none';
+  // Same iframe fix as the divider: events over the preview iframe
+  // would otherwise never reach this page while dragging.
+  previewFrame.style.pointerEvents = 'none';
   e.preventDefault();
 });
 document.addEventListener('pointermove', e => {
@@ -891,6 +894,7 @@ document.addEventListener('pointerup', () => {
   if (!consoleDragging) return;
   consoleDragging = false;
   document.body.style.cursor = document.body.style.userSelect = '';
+  previewFrame.style.pointerEvents = '';
 });
 
 /* ═══════════════════════════════════════════════════════════
@@ -1032,6 +1036,9 @@ divider.addEventListener('mousedown', e => {
   divider.classList.add('dragging');
   document.body.style.cursor     = 'col-resize';
   document.body.style.userSelect = 'none';
+  // The preview iframe swallows mouse events while the cursor is over
+  // it — disable its pointer events for the duration of the drag.
+  previewFrame.style.pointerEvents = 'none';
   e.preventDefault();
 });
 document.addEventListener('mousemove', e => {
@@ -1046,6 +1053,7 @@ document.addEventListener('mouseup', () => {
   isDragging = false;
   divider.classList.remove('dragging');
   document.body.style.cursor = document.body.style.userSelect = '';
+  previewFrame.style.pointerEvents = '';
   htmlEditor.refresh();
   cssEditor.refresh();
   jsEditor.refresh();
