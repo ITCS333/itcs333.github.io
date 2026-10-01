@@ -1,6 +1,6 @@
 [
   {
-    "title": "Week 1 (FEB 08)",
+    "title": "Week 1 — Introduction & How the Web Works",
     "contents": [
       {
         "title": "Text Book",
@@ -9,28 +9,53 @@
       },
       {
         "title": "Reference",
-        "content": "Programming Challenges",
-        "url": "https://harmash.com/tutorials/algorithms-and-data-structure/overview"
+        "content": "MDN How the Web Works",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Overview of HTTP",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview"
       },
       {
         "title": "Video",
         "content": "What happens when you type google.com into your browser and press enter?",
         "url": "https://www.youtube.com/watch?v=dh406O2v_1c"
-      }
-    ]
-  },
-  {
-    "title": "Week 2 (FEB 15)",
-    "contents": [
+      },
       {
         "title": "Tool",
         "content": "VS Code",
         "url": "https://code.visualstudio.com/"
       },
       {
+        "title": "Tool",
+        "content": "XAMPP",
+        "url": "https://www.apachefriends.org/"
+      }
+    ]
+  },
+  {
+    "title": "Week 2 — HTML & CSS Foundations",
+    "contents": [
+      {
         "title": "Reference",
         "content": "MDN HTML Reference",
         "url": "https://developer.mozilla.org/en-US/docs/Web/HTML"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Structuring Content with HTML",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN CSS Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN CSS Styling Basics",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"
       },
       {
         "title": "Reference",
@@ -46,36 +71,51 @@
         "title": "Examples",
         "content": "HTML Examples",
         "url": "https://itcs333.github.io/examples/ch3/"
-      }
-    ]
-  },
-  {
-    "title": "Week 3 (FEB 22)",
-    "contents": [
-      {
-        "title": "Reference",
-        "content": "MDN CSS Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS"
       },
       {
         "title": "Examples",
         "content": "CSS Examples",
         "url": "https://itcs333.github.io/examples/ch4/"
+      }
+    ]
+  },
+  {
+    "title": "Week 3 — Tables, Forms & Layout",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN HTML Table Basics",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Web Forms",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN CSS Layout",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Flexbox",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Grid Layout",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout"
       },
       {
         "title": "Examples",
         "content": "CSS Layout Examples",
         "url": "https://itcs333.github.io/examples/ch7/"
-      },
-      {
-        "title": "Reference",
-        "content": "Pico CSS",
-        "url": "https://picocss.com/"
       }
     ]
   },
   {
-    "title": "Week 4 (MAR 01)",
+    "title": "Week 4 — JavaScript Fundamentals & Project Kickoff",
     "contents": [
       {
         "title": "Reference",
@@ -83,39 +123,24 @@
         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
       },
       {
-        "title": "Examples",
-        "content": "JavaScript Examples",
-        "url": "https://itcs333.github.io/examples/ch8/"
-      }
-    ]
-  },
-  {
-    "title": "Week 5 (MAR 08)",
-    "contents": [
-      {
         "title": "Reference",
-        "content": "MDN DOM Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"
+        "content": "MDN Dynamic Scripting with JavaScript",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
       },
-      {
-        "title": "Reference",
-        "content": "MDN Events Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/Events"
-      },
-      {
-        "title": "Examples",
-        "content": "DOM and Events Examples",
-        "url": "https://itcs333.github.io/examples/ch9/"
-      }
-    ]
-  },
-  {
-    "title": "Week 6 (MAR 15)",
-    "contents": [
       {
         "title": "Reference",
         "content": "MDN Array Reference",
         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN JSON Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON"
+      },
+      {
+        "title": "Examples",
+        "content": "JavaScript Examples",
+        "url": "https://itcs333.github.io/examples/ch8/"
       },
       {
         "title": "Examples",
@@ -125,32 +150,37 @@
     ]
   },
   {
-    "title": "Week 7 (MAR 22)",
-    "contents": [
-      {
-        "title": "Examples",
-        "content": "Orders Example",
-        "url": "https://github.com/ITCS333/examples/tree/main/ch10"
-      }
-    ]
-  },
-  {
-    "title": "Week 8 (MAR 29)",
+    "title": "Week 5 — DOM & Events",
     "contents": [
       {
         "title": "Reference",
-        "content": "MDN Local Storage Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+        "content": "MDN DOM Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"
       },
       {
         "title": "Reference",
-        "content": "MDN Session Storage Reference",
-        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage"
+        "content": "MDN DOM Scripting",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/DOM_scripting"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Events",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Events"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Event Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Event"
+      },
+      {
+        "title": "Examples",
+        "content": "DOM and Events Examples",
+        "url": "https://itcs333.github.io/examples/ch9/"
       }
     ]
   },
   {
-    "title": "Week 9 (APR 05)",
+    "title": "Week 6 — APIs, Async & Project Contracts",
     "contents": [
       {
         "title": "Reference",
@@ -158,10 +188,112 @@
         "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
       },
       {
+        "title": "Reference",
+        "content": "MDN Network Requests",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Network_requests"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Asynchronous JavaScript",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Promise Reference",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN JavaScript Modules",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules"
+      },
+      {
         "title": "Examples",
         "content": "Fetch API Examples",
         "url": "https://itcs333.github.io/examples/ch10/fetch-playground.html"
       }
     ]
+  },
+  {
+    "title": "Week 7 — PHP & Server-Side Development",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Server-Side Website Programming",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Introduction"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Client-Server Overview",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Sending Form Data",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Sending_and_retrieving_form_data"
+      }
+    ]
+  },
+  {
+    "title": "Week 8 — Midterm",
+    "contents": []
+  },
+  {
+    "title": "Week 9 — Databases with PDO & MySQL",
+    "contents": []
+  },
+  {
+    "title": "Week 10 — DB Design, State & Project Checkpoint",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Using HTTP Cookies",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies"
+      }
+    ]
+  },
+  {
+    "title": "Week 11 — Sessions in Depth & Security",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Website Security",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Website_security"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Web Security",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Security"
+      }
+    ]
+  },
+  {
+    "title": "Week 12 — Node.js & React",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "MDN Express/Node Introduction",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs"
+      },
+      {
+        "title": "Reference",
+        "content": "MDN Getting Started with React",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/React_getting_started"
+      }
+    ]
+  },
+  {
+    "title": "Week 13 — Laravel & Integration Sprint",
+    "contents": [
+      {
+        "title": "Reference",
+        "content": "Laravel Documentation",
+        "url": "https://laravel.com/docs"
+      }
+    ]
+  },
+  {
+    "title": "Week 14 — Review, Demos & Oral Discussion",
+    "contents": []
   }
 ]
