@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/material.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/nord.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/solarized.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/idea.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/eclipse.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/mdn-like.min.css" />
 
@@ -44,6 +44,8 @@
       --muted:     #6272a4;
       --tab-h:     42px;
       --toolbar-h: 52px;
+      --cm-font-size: 14px;
+      --console-font-size: 13px;
     }
 
     html { height: 100%; }
@@ -123,6 +125,15 @@
       font-size: 0.78rem;
       color: var(--muted);
       white-space: nowrap;
+    }
+
+    .font-size-label {
+      flex-shrink: 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+      min-width: 34px;
+      text-align: center;
     }
 
     /* ── App ──────────────────────────────────────────────── */
@@ -211,7 +222,7 @@
     .cm-wrap .CodeMirror {
       flex: 1;
       height: 100% !important;
-      font-size: 0.9rem;
+      font-size: var(--cm-font-size);
       line-height: 1.6;
       font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
     }
@@ -237,6 +248,102 @@
       min-height: 0;
       background: #fff;
     }
+
+    /* ── Console drawer ───────────────────────────────────── */
+    #console-panel {
+      flex-shrink: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #console-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    #console-header:hover { color: var(--text); }
+    #console-header .caret { transition: transform 0.15s; }
+    #console-panel.open #console-header .caret { transform: rotate(90deg); }
+
+    #console-badge {
+      background: var(--accent3);
+      color: #1e1f29;
+      border-radius: 10px;
+      padding: 0 7px;
+      font-size: 0.7rem;
+      line-height: 1.5;
+    }
+    #console-badge:empty { display: none; }
+
+    #btn-console-clear {
+      margin-left: auto;
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    #btn-console-clear:hover { background: var(--muted); }
+
+    .console-fs-btn {
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .console-fs-btn:hover { background: var(--muted); }
+
+    #console-resizer {
+      display: none;
+      height: 5px;
+      flex-shrink: 0;
+      background: var(--border);
+      cursor: row-resize;
+      touch-action: none;
+      transition: background 0.15s;
+    }
+    #console-resizer:hover { background: var(--accent); }
+    #console-panel.open #console-resizer { display: block; }
+
+    #console-body {
+      display: none;
+      overflow-y: auto;
+      height: 160px; /* overridden by JS (saved height / drag) */
+      padding: 4px 10px;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: var(--console-font-size);
+      line-height: 1.5;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+    }
+    #console-panel.open #console-body { display: block; }
+
+    .log-line {
+      padding: 2px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log-line:last-child { border-bottom: none; }
+    .log-warn  { color: #f1fa8c; }
+    .log-error { color: var(--accent3); }
+    .log-info  { color: #8be9fd; }
+    .log-debug { color: var(--muted); }
 
     /* ── Toast ────────────────────────────────────────────── */
     #toast {
@@ -331,7 +438,11 @@
     }
 
     @media (max-width: 480px) {
+      #toolbar { gap: 6px; padding: 0 8px; }
+      .toolbar-btn { padding: 6px 7px; }
+      #theme-select { max-width: 84px; }
       .theme-label { display: none; }
+      .font-size-label { display: none; }
     }
   </style>
 </head>
@@ -343,6 +454,9 @@
   <button class="toolbar-btn run" id="btn-run">▶ Run</button>
   <button class="toolbar-btn" id="btn-share">⎘ Share</button>
   <button class="toolbar-btn" id="btn-clear">✕ Clear</button>
+  <button class="toolbar-btn" id="btn-font-dec" title="Decrease font size">A−</button>
+  <span class="font-size-label" id="font-size-label">14px</span>
+  <button class="toolbar-btn" id="btn-font-inc" title="Increase font size">A+</button>
   <span class="theme-label">Theme:</span>
   <select id="theme-select" title="Editor theme">
     <optgroup label="Dark">
@@ -355,7 +469,7 @@
     <optgroup label="Light">
       <option value="default">Default (Light)</option>
       <option value="solarized light">Solarized Light</option>
-      <option value="github">GitHub</option>
+      <option value="idea">IDEA</option>
       <option value="eclipse">Eclipse</option>
       <option value="mdn-like">MDN-like</option>
     </optgroup>
@@ -398,6 +512,17 @@
     <div id="preview-panel" class="hidden">
       <div class="panel-label">Preview</div>
       <iframe id="preview-frame" sandbox="allow-scripts allow-modals allow-forms allow-same-origin"></iframe>
+      <div id="console-panel">
+        <div id="console-resizer" title="Drag to resize"></div>
+        <div id="console-header">
+          <span class="caret">▸</span> Console
+          <span id="console-badge"></span>
+          <button class="console-fs-btn" id="btn-console-font-dec" title="Decrease console font size">A−</button>
+          <button class="console-fs-btn" id="btn-console-font-inc" title="Increase console font size">A+</button>
+          <button id="btn-console-clear">Clear</button>
+        </div>
+        <div id="console-body"></div>
+      </div>
     </div>
 
   </div>
@@ -522,6 +647,9 @@ const cssEditor  = CodeMirror(document.getElementById('css-cm-wrap'),  { ...cmOp
 const jsEditor   = CodeMirror(document.getElementById('js-cm-wrap'),   { ...cmOpts('javascript'), value: initial.js   });
 
 document.getElementById('theme-select').value = initial.theme;
+// If the saved/preloaded theme no longer exists (e.g. removed 'github'),
+// fall back to the default so editors aren't left unstyled.
+if (document.getElementById('theme-select').value !== initial.theme) setTheme('default');
 
 /* ═══════════════════════════════════════════════════════════
    7.  THEME
@@ -535,8 +663,83 @@ document.getElementById('theme-select')
   .addEventListener('change', e => setTheme(e.target.value));
 
 /* ═══════════════════════════════════════════════════════════
+   7.5  FONT SIZE
+═══════════════════════════════════════════════════════════ */
+const FONT_MIN     = 10;
+const FONT_MAX     = 28;
+const FONT_STEP    = 1;
+const FONT_DEFAULT = 14;
+
+const fontSizeLabel = document.getElementById('font-size-label');
+let fontSize = parseInt(localStorage.getItem('cm-font-size'), 10);
+if (Number.isNaN(fontSize)) fontSize = FONT_DEFAULT;
+
+function setFontSize(px) {
+  fontSize = Math.min(Math.max(px, FONT_MIN), FONT_MAX);
+  document.documentElement.style.setProperty('--cm-font-size', fontSize + 'px');
+  fontSizeLabel.textContent = fontSize + 'px';
+  localStorage.setItem('cm-font-size', fontSize);
+  [htmlEditor, cssEditor, jsEditor].forEach(ed => ed.refresh());
+}
+
+document.getElementById('btn-font-inc')
+  .addEventListener('click', () => setFontSize(fontSize + FONT_STEP));
+document.getElementById('btn-font-dec')
+  .addEventListener('click', () => setFontSize(fontSize - FONT_STEP));
+
+setFontSize(fontSize);
+
+/* ═══════════════════════════════════════════════════════════
    8.  RUN / PREVIEW
 ═══════════════════════════════════════════════════════════ */
+/* Console hook: injected into the preview document so it runs
+   before any user script. Wraps console.* and error events and
+   forwards everything to the parent page via postMessage.
+   Must not contain the sequence "</" + "script>". */
+const CONSOLE_HOOK = `<script>
+(function () {
+  function fmt(v) {
+    if (typeof v === 'string') return v;
+    if (typeof v === 'function') return String(v);
+    if (v === undefined) return 'undefined';
+    try {
+      var seen = [];
+      var out = JSON.stringify(v, function (k, val) {
+        if (val && typeof val === 'object') {
+          if (seen.indexOf(val) !== -1) return '[Circular]';
+          seen.push(val);
+        }
+        return val;
+      });
+      return out === undefined ? String(v) : out;
+    } catch (e) { return String(v); }
+  }
+  function send(level, args) {
+    try {
+      var a = [];
+      for (var i = 0; i < args.length; i++) {
+        var s = fmt(args[i]);
+        a.push(s.length > 1000 ? s.slice(0, 1000) + '…' : s);
+      }
+      parent.postMessage({ __console: 1, level: level, args: a }, '*');
+    } catch (e) {}
+  }
+  ['log', 'info', 'warn', 'error', 'debug'].forEach(function (level) {
+    var orig = console[level] || function () {};
+    console[level] = function () {
+      send(level, arguments);
+      orig.apply(console, arguments);
+    };
+  });
+  window.addEventListener('error', function (e) {
+    send('error', [(e.message || 'Script error') + (e.lineno ? ' (line ' + e.lineno + ')' : '')]);
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    send('error', ['Uncaught (in promise) ' + fmt(e.reason)]);
+  });
+})();
+<\/script>`;
+
 function buildDocument() {
   const html = htmlEditor.getValue();
   const css  = cssEditor.getValue();
@@ -547,15 +750,22 @@ function buildDocument() {
     let doc = html;
     const s = `<style>${css}</style>`;
     const j = `<script>${js}<\/script>`;
+    // Console hook first — right after <head> so it wraps console.*
+    // before any user script runs.
+    doc = /<head(\s[^>]*)?>/i.test(doc)
+      ? doc.replace(/<head(\s[^>]*)?>/i, m => m + '\n' + CONSOLE_HOOK)
+      : CONSOLE_HOOK + '\n' + doc;
     doc = /<\/head>/i.test(doc) ? doc.replace(/<\/head>/i, `${s}\n</head>`) : s + '\n' + doc;
     doc = /<\/body>/i.test(doc) ? doc.replace(/<\/body>/i, `${j}\n</body>`) : doc + '\n' + j;
     return doc;
   }
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+${CONSOLE_HOOK}
 <style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
 }
 
 function runPreview() {
+  clearConsole();
   document.getElementById('preview-frame').srcdoc = buildDocument();
 }
 
@@ -568,6 +778,120 @@ window.addEventListener('load', () => {
   }, 50);
 });
 document.getElementById('btn-run').addEventListener('click', runPreview);
+
+/* ═══════════════════════════════════════════════════════════
+   8.5  CONSOLE DRAWER
+═══════════════════════════════════════════════════════════ */
+const consolePanel = document.getElementById('console-panel');
+const consoleBody  = document.getElementById('console-body');
+const consoleBadge = document.getElementById('console-badge');
+const previewFrame = document.getElementById('preview-frame');
+const MAX_CONSOLE_LINES = 200;
+let consoleCount = 0;
+
+function clearConsole() {
+  consoleBody.textContent = '';
+  consoleCount = 0;
+  consoleBadge.textContent = '';
+}
+
+function appendConsoleLine(level, args) {
+  const line = document.createElement('div');
+  line.className = 'log-line log-' + level;
+  line.textContent = args.join(' ');
+  consoleBody.appendChild(line);
+  while (consoleBody.children.length > MAX_CONSOLE_LINES)
+    consoleBody.removeChild(consoleBody.firstChild);
+  consoleBody.scrollTop = consoleBody.scrollHeight;
+  if (!consolePanel.classList.contains('open')) {
+    consoleCount++;
+    consoleBadge.textContent = consoleCount;
+  }
+}
+
+window.addEventListener('message', e => {
+  if (e.source !== previewFrame.contentWindow) return;
+  const d = e.data;
+  if (!d || d.__console !== 1) return;
+  appendConsoleLine(d.level, d.args);
+});
+
+document.getElementById('console-header').addEventListener('click', () => {
+  consolePanel.classList.toggle('open');
+  if (consolePanel.classList.contains('open')) {
+    consoleCount = 0;
+    consoleBadge.textContent = '';
+    consoleBody.scrollTop = consoleBody.scrollHeight;
+  }
+});
+
+document.getElementById('btn-console-clear').addEventListener('click', e => {
+  e.stopPropagation();
+  clearConsole();
+});
+
+/* ── Console font size ────────────────────────────────────── */
+const CONSOLE_FONT_MIN     = 9;
+const CONSOLE_FONT_MAX     = 20;
+const CONSOLE_FONT_DEFAULT = 13;
+
+let consoleFontSize = parseInt(localStorage.getItem('cm-console-font-size'), 10);
+if (Number.isNaN(consoleFontSize)) consoleFontSize = CONSOLE_FONT_DEFAULT;
+
+function setConsoleFontSize(px) {
+  consoleFontSize = Math.min(Math.max(px, CONSOLE_FONT_MIN), CONSOLE_FONT_MAX);
+  document.documentElement.style.setProperty('--console-font-size', consoleFontSize + 'px');
+  localStorage.setItem('cm-console-font-size', consoleFontSize);
+}
+
+document.getElementById('btn-console-font-inc').addEventListener('click', e => {
+  e.stopPropagation();
+  setConsoleFontSize(consoleFontSize + 1);
+});
+document.getElementById('btn-console-font-dec').addEventListener('click', e => {
+  e.stopPropagation();
+  setConsoleFontSize(consoleFontSize - 1);
+});
+
+setConsoleFontSize(consoleFontSize);
+
+/* ── Console height (drag to resize) ─────────────────────── */
+const consoleResizer  = document.getElementById('console-resizer');
+const consoleHeader   = document.getElementById('console-header');
+const CONSOLE_DEFAULT_H = 160;
+let consoleDragging   = false;
+
+function setConsoleHeight(px) {
+  consoleBody.style.height = px + 'px';
+  consoleBody.style.maxHeight = 'none';
+  localStorage.setItem('cm-console-height', Math.round(px));
+}
+
+// Percentage heights don't resolve inside the flex column, so the body
+// gets an explicit px height: saved value, or a sensible default.
+const savedConsoleH = parseInt(localStorage.getItem('cm-console-height'), 10);
+consoleBody.style.height = (Number.isNaN(savedConsoleH) ? CONSOLE_DEFAULT_H : savedConsoleH) + 'px';
+consoleBody.style.maxHeight = 'none';
+
+consoleResizer.addEventListener('pointerdown', e => {
+  consoleDragging = true;
+  document.body.style.cursor = 'row-resize';
+  document.body.style.userSelect = 'none';
+  e.preventDefault();
+});
+document.addEventListener('pointermove', e => {
+  if (!consoleDragging) return;
+  const panelRect = consolePanel.parentElement.getBoundingClientRect();
+  const chromeH   = consoleHeader.offsetHeight + consoleResizer.offsetHeight;
+  const h = Math.min(Math.max(panelRect.bottom - e.clientY - chromeH, 60),
+                     panelRect.height * 0.85);
+  setConsoleHeight(h);
+});
+document.addEventListener('pointerup', () => {
+  if (!consoleDragging) return;
+  consoleDragging = false;
+  document.body.style.cursor = document.body.style.userSelect = '';
+});
 
 /* ═══════════════════════════════════════════════════════════
    9.  SHARE
